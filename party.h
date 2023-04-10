@@ -11,15 +11,16 @@
 #include <cmath>
 #include <vector>
 #include "character.h"
+#include "game.h"
 using namespace std;
 
 class Party {
 
     bool partyLive;
-    bool checkPartyLive();
+    bool checkPartyLive(string party);
 
-    Character party[5];
-    void setParty(string name1, string name2, string name3, string name4, string name5);
+    Character members[5];
+    // void setParty(string name1, string name2, string name3, string name4, string name5);
 
     int gold;
     int ingredients;
@@ -28,7 +29,12 @@ class Party {
     int armor;
     int treasures[5];
 
-    void printInventory();
+    int keys;
+
+    void printInventory(string party);
+    void printStatus(string party, string game);
+    Party();
+    Party(string party);
 
 
 };

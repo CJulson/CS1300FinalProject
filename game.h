@@ -20,10 +20,18 @@ class Game {
         bool win;
         bool checkWin();
 
+        bool lose;
+        bool checkLose();
+
         int anger;
         int checkAnger();
 
-        bool key;
-        bool checkKey();
+        int roomsClear;
+
+        bool keys;
+        bool checkKeys();
+
+        Game();
+        Game(string game);
 
 };
