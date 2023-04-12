@@ -35,14 +35,14 @@ Party::Party(Game game_) {
     int keys = 0;
     int roomsClear = 0;
     int anger = 0;
-    game = game_;
+    Game game = game_;
 }
 
-bool Party::checkPartyLive(Party party) {
+bool Party::checkPartyLive() {
     int liveCount = 0;
     //bool deadIndex[5] = {0,0,0,0,0};
     for(int i = 1; i < 6; i++) {
-        if(party.members[i].fullness > 1) {
+        if(members[i].fullness > 1) {
             liveCount++;
             //deadIndex[i] = 1;
         }
@@ -55,38 +55,52 @@ bool Party::checkPartyLive(Party party) {
     }
 }
 
-void Party::printInventory(Party party) {
+void Party::printInventory() {
     cout << "+-------------+" << endl;
     cout << "| INVENTORY   |" << endl;
     cout << "+-------------+" << endl;
-    cout << "| Gold        | " << party.gold << endl;
-    cout << "| Ingredients | " << party.ingredients << " kg" << endl;
-    cout << "| Cookware    | P: " << party.cookware[0] << " | F: " << party.cookware[1] << " | C: " << party.cookware[2] << endl;
-    cout << "| Weapons     | C: " << party.weapons[0] << " | S: " << party.weapons[1] << " | R: " << party.weapons[2] << " B:  "<< party.weapons[3] << " | L: " << party.weapons[4] << endl;
-    cout << "| Armor       | " << party.armor << endl;
-    cout << "| Treasures   | R: " << party.treasures[0] << " | N: " << party.treasures[1] << " | B: " << party.treasures[2] << " C:  "<< party.treasures[3] << " | G: " << party.treasures[4] << endl;
+    cout << "| Gold        | " << gold << endl;
+    cout << "| Ingredients | " << ingredients << " kg" << endl;
+    cout << "| Cookware    | P: " << cookware[0] << " | F: " << cookware[1] << " | C: " << cookware[2] << endl;
+    cout << "| Weapons     | C: " << weapons[0] << " | S: " << weapons[1] << " | R: " << weapons[2] << " B:  "<< weapons[3] << " | L: " << weapons[4] << endl;
+    cout << "| Armor       | " << armor << endl;
+    cout << "| Treasures   | R: " << treasures[0] << " | N: " << treasures[1] << " | B: " << treasures[2] << " C:  "<< treasures[3] << " | G: " << treasures[4] << endl;
     cout << "+-------------+" << endl;
 }
 
-void Party::printStatus(Party party, Game game) {
+void Party::printStatus() {
     cout << "+-------------+" << endl;
     cout << "| STATUS      |" << endl;
     cout << "+-------------+" << endl;
-    cout << "| Rooms Cleared: " << party.roomsClear << " | Keys: " << party.keys << " | Anger Level: " << party.anger << endl;
-    party.printInventory(party);
+    cout << "| Rooms Cleared: " << roomsClear << " | Keys: " << keys << " | Anger Level: " << anger << endl;
+    printInventory();
     cout << "| PARTY.      |" << endl;
     cout << "+-------------+" << endl;
-    cout << "| " << party.members[0].name << " | Fullness: " << party.members[0].fullness << endl;
-    cout << "| " << party.members[1].name << " | Fullness: " << party.members[1].fullness << endl;
-    cout << "| " << party.members[2].name << " | Fullness: " << party.members[2].fullness << endl;
-    cout << "| " << party.members[3].name << " | Fullness: " << party.members[3].fullness << endl;
-    cout << "| " << party.members[4].name << " | Fullness: " << party.members[4].fullness << endl;
+    cout << "| " << members[0].name << " | Fullness: " << members[0].fullness << endl;
+    cout << "| " << members[1].name << " | Fullness: " << members[1].fullness << endl;
+    cout << "| " << members[2].name << " | Fullness: " << members[2].fullness << endl;
+    cout << "| " << members[3].name << " | Fullness: " << members[3].fullness << endl;
+    cout << "| " << members[4].name << " | Fullness: " << members[4].fullness << endl;
     cout << "+-------------+" << endl;
 }
 
-void Party::checkAnger(Party party) {
-    if(party.anger > 99) {
+void Party::checkAnger() {
+    if(anger > 99) {
         game.lose = false;
+    } else {
+        return;
+    }
+}
+
+void Party::checkLose() {
+    if(anger > 99) {
+        cout << "The wizard has grown too angry and sealed the exit! You perish in the dungeon." << endl;
+        game.setLose();
+        return;
+    } else if (checkPartyLive()) {
+        cout << "All of you party members have perished. You did not escape the dungeon" << endl;
+        game.setLose();
+        return;
     } else {
         return;
     }

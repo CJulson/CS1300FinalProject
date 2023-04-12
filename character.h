@@ -10,7 +10,7 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-#include "party.h"
+
 
 #ifndef CHARACTER_H
 #define CHARACTER_H

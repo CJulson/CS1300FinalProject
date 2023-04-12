@@ -10,8 +10,8 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-#include "character.h"
 #include "game.h"
+#include "character.h"
 using namespace std;
 
 #ifndef PARTY_H
@@ -24,7 +24,7 @@ public:
     int roomsClear;
     int anger;
     bool partyLive;
-    bool checkPartyLive(Party party);
+    bool checkPartyLive();
 
     Character members[5];
     // void setParty(string name1, string name2, string name3, string name4, string name5);
@@ -38,10 +38,11 @@ public:
 
     int keys;
 
-    void printInventory(Party party);
-    void printStatus(Party party, Game game);
+    void printInventory();
+    void printStatus();
     Party(Game game_);
-    void checkAnger(Party party);
+    void checkAnger();
+    void checkLose();
 
 
 };

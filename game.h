@@ -10,11 +10,11 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-#include "party.h"
+
 using namespace std;
 
 #ifndef GAME_H
-#define BUFFCHAT_H
+#define GAME_H
 
 class Game {
     private:
@@ -22,11 +22,15 @@ class Game {
 
     public:
         bool win;
-        bool setWin();
+        void setWin();
+        void checkWin();
 
         bool lose;
-        bool checkLose(Party party);
+        void checkLose();
+        void setLose();
 
         Game();
 
 };
+
+#endif

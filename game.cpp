@@ -5,10 +5,8 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-#include "character.h"
 #include "game.h"
 #include "party.h"
-#include "merchant.h"
 using namespace std;
 
 Game::Game() {
@@ -16,7 +14,7 @@ Game::Game() {
     bool lose = false;
 }
 
-bool Game::setWin() {
+void Game::setWin() {
     win = true;
 }
 
@@ -26,17 +24,11 @@ void Game::checkWin() {
     }
 }
 
-bool Game::checkLose(Party party) {
-    if(party.anger > 99) {
-        cout << "The wizard has grown too angry and sealed the exit! You perish in the dungeon." << endl;
+void Game::setLose() {
+    lose = true;
+}
+void Game::checkLose() {
+    if(lose = true) {
         cout << "Game over." << endl;
-        lose = true;
-        return true;
-    } else if (party.checkPartyLive()) {
-        cout << "All of you party members have perished. You did not escape the dungeon" << endl;
-        cout << "Game over." << endl;
-        lose = true;
-    } else {
-        return false;
     }
 }
