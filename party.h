@@ -14,10 +14,17 @@
 #include "game.h"
 using namespace std;
 
+#ifndef PARTY_H
+#define PARTY_H
+
 class Party {
 
+public:
+    Game game;
+    int roomsClear;
+    int anger;
     bool partyLive;
-    bool checkPartyLive(string party);
+    bool checkPartyLive(Party party);
 
     Character members[5];
     // void setParty(string name1, string name2, string name3, string name4, string name5);
@@ -31,10 +38,12 @@ class Party {
 
     int keys;
 
-    void printInventory(string party);
-    void printStatus(string party, string game);
-    Party();
-    Party(string party);
+    void printInventory(Party party);
+    void printStatus(Party party, Game game);
+    Party(Game game_);
+    void checkAnger(Party party);
 
 
 };
+
+#endif

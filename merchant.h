@@ -12,4 +12,4 @@
 #include <vector>
 using namespace std;
 
-void merchantMenu(string partyName);
+void merchantMenu(Party partyName);

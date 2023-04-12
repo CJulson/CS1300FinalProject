@@ -15,7 +15,7 @@
 #include "character.h"
 using namespace std;
 
-void merchantMenu(string partyName) {
+void merchantMenu(Party partyName) {
     bool exit = false;
     int start;
 
@@ -24,7 +24,7 @@ void merchantMenu(string partyName) {
 
     while(exit == false) {
 
-        partyName.printInventory();
+        partyName.printInventory(partyName);
 
         cout << "Choose one of the following" << endl;
         cout << "Choose one of the following: " << endl;
@@ -286,18 +286,18 @@ void merchantMenu(string partyName) {
 
                 cin >> buyArmor;
 
-                if(armorFood < 1) {
+                if(buyArmor < 1) {
                     cout << "Invalid input" << endl;//input validation
                 } else if(buyArmor * 5 > partyName.gold) {
                     cout << "Insufficent funds" << endl;//checks you have enough gold
                 } else {
                     cout << "Confirm you want to buy " << buyArmor << " suits of armor worth " << buyArmor * 5 << "Gold?(y/n)" << endl;
                     cin >> checkArmor;
-                    if(checkFood == 'n') {
+                    if(checkArmor == 'n') {
                         break;
-                    } else if(checkFood == 'y') {
+                    } else if(checkArmor == 'y') {
                         partyName.gold -= buyArmor * 5;
-                        partyName.Armor += buyArmor;//math for purchase
+                        partyName.armor += buyArmor;//math for purchase
                         cout << "Thanks for your purchase" << endl;
                     } else {
                         cout << "Invalid input." << endl;
@@ -386,7 +386,7 @@ void merchantMenu(string partyName) {
                     } else {
                         cout << "Invalid input" << endl;
                     }
-                }else if(buyWeapons == 4) {
+                }else if(sellTreasure == 4) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
                     if (numTreasure > 0 && numTreasure > partyName.treasures[3]) {//if they have enough gold
@@ -406,7 +406,7 @@ void merchantMenu(string partyName) {
                     } else {
                         cout << "Invalid input" << endl;
                     }
-                } else if(buyWeapons == 5) {
+                } else if(sellTreasure == 5) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
                     if (numTreasure > 0 && numTreasure > partyName.treasures[4]) {//if they have enough gold
