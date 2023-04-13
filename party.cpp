@@ -26,7 +26,7 @@ Party::Party(Game game_) {
         members[i-1] = Character(temp);
         cout << "Hi, " << temp << " welcome to dungeon esacpe!" << endl;
     }
-    int gold =0;
+    int gold = 100;
     int ingredients=0;
     int cookware[3]={0,0,0};
     int weapons[5]={0,0,0,0,0};
@@ -62,9 +62,9 @@ void Party::printInventory() {
     cout << "| Gold        | " << gold << endl;
     cout << "| Ingredients | " << ingredients << " kg" << endl;
     cout << "| Cookware    | P: " << cookware[0] << " | F: " << cookware[1] << " | C: " << cookware[2] << endl;
-    cout << "| Weapons     | C: " << weapons[0] << " | S: " << weapons[1] << " | R: " << weapons[2] << " B:  "<< weapons[3] << " | L: " << weapons[4] << endl;
+    cout << "| Weapons     | C: " << weapons[0] << " | S: " << weapons[1] << " | R: " << weapons[2] << " | B:  "<< weapons[3] << " | L: " << weapons[4] << endl;
     cout << "| Armor       | " << armor << endl;
-    cout << "| Treasures   | R: " << treasures[0] << " | N: " << treasures[1] << " | B: " << treasures[2] << " C:  "<< treasures[3] << " | G: " << treasures[4] << endl;
+    cout << "| Treasures   | R: " << treasures[0] << " | N: " << treasures[1] << " | B: " << treasures[2] << " | C:  "<< treasures[3] << " | G: " << treasures[4] << endl;
     cout << "+-------------+" << endl;
 }
 
@@ -73,7 +73,16 @@ void Party::printStatus() {
     cout << "| STATUS      |" << endl;
     cout << "+-------------+" << endl;
     cout << "| Rooms Cleared: " << roomsClear << " | Keys: " << keys << " | Anger Level: " << anger << endl;
-    printInventory();
+    cout << "+-------------+" << endl;
+    cout << "| INVENTORY   |" << endl;
+    cout << "+-------------+" << endl;
+    cout << "| Gold        | " << gold << endl;
+    cout << "| Ingredients | " << ingredients << " kg" << endl;
+    cout << "| Cookware    | P: " << cookware[0] << " | F: " << cookware[1] << " | C: " << cookware[2] << endl;
+    cout << "| Weapons     | C: " << weapons[0] << " | S: " << weapons[1] << " | R: " << weapons[2] << " | B:  "<< weapons[3] << " | L: " << weapons[4] << endl;
+    cout << "| Armor       | " << armor << endl;
+    cout << "| Treasures   | R: " << treasures[0] << " | N: " << treasures[1] << " | B: " << treasures[2] << " | C:  "<< treasures[3] << " | G: " << treasures[4] << endl;
+    cout << "+-------------+" << endl;
     cout << "| PARTY.      |" << endl;
     cout << "+-------------+" << endl;
     cout << "| " << members[0].name << " | Fullness: " << members[0].fullness << endl;

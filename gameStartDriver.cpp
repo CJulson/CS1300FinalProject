@@ -8,7 +8,6 @@
 #include "character.h"
 #include "game.h"
 #include "party.h"
-#include "merchant.h"
 using namespace std;
 
 
@@ -19,11 +18,12 @@ void merchantMenu(Party partyName) {
     cout << "If you're looking to get supplies, you've come to the right place." << endl;
     cout << "I would be happy to part with some of my wares...for the proper price!" << endl;
 
+    //partyName.gold = 100;
+
     while(exit == false) {
 
         partyName.printInventory();
 
-        cout << "Choose one of the following" << endl;
         cout << "Choose one of the following: " << endl;
         cout << "1. Ingredients: To make food, you have to cook raw ingredients." << endl;
         cout << "2. Cookware: You will need something to cook those ingredients." << endl;
@@ -430,6 +430,10 @@ void merchantMenu(Party partyName) {
             }
             break;
 
+            case 6:
+                exit = true;
+                break;
+
             default:
                 cout << "Invalid input." << endl;
 
@@ -444,5 +448,13 @@ int main() {
 
     Party testParty = Party(testGame);
 
+    cout << endl;
+    cout << "GOLD: " << testParty.gold << endl;
+    cout << endl;
+
     merchantMenu(testParty);
+
+    cout << "GOLD: " << testParty.gold << endl;
+
+    testParty.printStatus();
 }
