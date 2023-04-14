@@ -9,16 +9,16 @@ class baseAction
     public:
     // Normal Space Actions
     void investigate(Game game, Party party);  // Investigate Current Spot & Return Findings
-    void monsterFight();   // Initiates Monster Fight
-    void cook();   // Display Cooking Menu and Loop 
+    void monsterFight(Game game, Party party);   // Initiates Monster Fight
+    void cook(Game game, Party party);   // Display Cooking Menu and Loop 
 
     // NPC Space Actions 
-    void speak();
+    void speak(Game game, Party party);
 
     // Room Space Actions
-    void openDoor();
+    void openDoor(Game game, Party party);
 
     // Anytime Actions
-    void giveUp();   // Display Game Ending Conditons
+    void giveUp(Game game, Party party);   // Display Game Ending Conditons
 
 };

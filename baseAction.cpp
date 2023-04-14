@@ -61,6 +61,9 @@ int split(string input_string, char seperator, string arr[], int arr_size)
 
 }
 
+baseAction::baseAction() {
+    int x = 5 + 5;
+}
 
 
 
@@ -75,6 +78,7 @@ void baseAction::investigate(Game game, Party party)
     // 10% Chance To Add Key
     if(random == 1)
     {
+        cout << "You have found a key!" << endl;
         party.keys++;
     }
 
@@ -82,11 +86,28 @@ void baseAction::investigate(Game game, Party party)
     if (random == 2 || random == 3)
     {
         // ADD TREASURE (BASED ON ROOMS CLEARED?)
+        int temp = rand() % 101 + 1 + party.roomsClear * 10;
+        if(temp >= 90) {
+            cout << "You have discovered a Gem-Encrusted Goblet!(Worth 50 gold)" << endl;
+            party.treasures[4]++;
+        } else if (temp >= 75) {
+            cout << "You have discovered a Diamond Circlet!(Worth 40 gold)" << endl;
+            party.treasures[3]++;
+        } else if (temp >= 60) {
+            cout << "You have discovered a Emerald Bracelet!(Worth 30 gold)" << endl;
+            party.treasures[2]++;
+        } else if(temp >= 30) {
+            cout << "You have discovered a Ruby Necklace!(Worth 20 gold)" << endl;
+            party.treasures[1]++;
+        } else {
+            cout << "You have discovered a Silver Ring!(Worth 10 gold)" << endl;
+            party.treasures[0]++;
+        }
     }
 
     if (random == 4 || random == 5)
     {
-        monsterFight() // Fight Random Monster
+        monsterFight(); // Fight Random Monster
     }
 
     return;
@@ -97,7 +118,7 @@ void baseAction::investigate(Game game, Party party)
 
 
 // Monster Fight Function
-void BaseAction :: monsterFight()
+void baseAction::monsterFight(Game game, Party party)
 {
     // DECLARE VARIBALES
     ifstream file_input;
@@ -108,7 +129,7 @@ void BaseAction :: monsterFight()
 
     // Find Numbers of Monsters Left in File
     int counter = 0;
-    file_input.open(monsters.txt);
+    file_input.open("monsters.txt");
     while(!file_input.eof())
     {
         getline(file_input, line);
@@ -123,7 +144,7 @@ void BaseAction :: monsterFight()
 
 
     // Select Random Monster From File and Send To "Monster"
-    file_input.open(monsters.txt);
+    file_input.open("monsters.txt");
     for(int i = 1; i <= counter; i++)  
     {
         getline(file_input, monster);
@@ -145,8 +166,87 @@ void BaseAction :: monsterFight()
 
 
 // Cook & Eat Function 
-void BaseAction :: cook()
+void baseAction :: cook(Game game, Party party)
 {
+    cout << "You have selected to cook" << endl;
+    if(party.ingredients == 0) {
+        cout << "Sorry you don't have any ingredients." << endl;//checks if they have ingredients
+        return;
+    } else {
+        bool haveCookware = false;
+        for(int i = 0; i < 3; i++) {
+            if (party.cookware[i] > 0) {
+                haveCookware = true;
+            }
+        }
+        if(haveCookware = false) {
+            cout << "Sorry you have no cookware to cook with." << endl;//checks if they have cookware
+            return;
+        }
+    }
+    bool exit = false;
+    int kilos;
+    while(exit == false) {
+        cout << "How many kg of food would you like to cook?(5kg = 1 fullness)" << endl;
+        cin >> kilos;
+        if(kilos > party.ingredients) {
+            cout << "You don't have that much try again." << endl;
+        } else {
+            exit = true;
+        }
+    }
+    exit = false;
+
+    while(exit == false) {
+        int item;
+        cout << "What cooking item would you like to use?" << endl;
+        cout << "Ceramic pot: " << party.cookware[0] << endl;
+        cout << "Frying pan: " << party.cookware[1] << endl;
+        cout << "Cauldron: " << party.cookware[2] << endl;
+        cin >> item;
+        switch(item) {
+            case 1:
+                if(party.cookware[0] < 1) {
+                    cout << "Sorry you don't have a Ceramic pot to cook with." << endl;
+                    break;
+                } else {
+                    cout << "You are cooking " << kilos << " kg of food with a Ceramic pot..." << endl;
+                    party.ingredients -= kilos;
+                    int random = rand() % 5 + 1;//random chance to break
+                    if(random == 1) {
+                        cout << "Your cook failed, you lose the pot and the ingredients" << endl;
+                        party.cookware[0]--;
+                    } else {
+                        cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
+                        for(int i = 0; i < 5; i++) {
+                            party.members[i].fullness += kilos / 5;
+                        }
+                    }
+                }
+                exit = true;
+            break;
+            case 2:
+                if(party.cookware[1] < 1) {
+                    cout << "Sorry you don't have a Frying pan to cook with." << endl;
+                    break;
+                } else {
+                    cout << "You are cooking " << kilos << " kg of food with a Frying pan..." << endl;
+                    party.ingredients -= kilos;
+                    int random = rand() % 11 + 1;
+                    if(random == 1) {
+                        cout << "Your cook failed, you lose the pan and the ingredients" << endl;
+                        party.cookware[1]--;
+                    } else {
+                        cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
+                        for(int i = 0; i < 5; i++) {
+                            party.members[i].fullness += kilos / 5;
+                        }
+                    }
+                }
+                exit = true;
+            break;
+        }
+    }
 
 }
 
@@ -154,7 +254,7 @@ void BaseAction :: cook()
 
 
 // NPC Speak Function (Puzzle)
-void BaseAction :: speak()
+void baseAction :: speak(Game game, Party party)
 {
     // Declare Variables 
     ifstream file_input;
@@ -168,10 +268,10 @@ void BaseAction :: speak()
 
 
     // Select Random Riddle From File and Send To "Riddle"
-    file_input.open(riddles.txt);
+    file_input.open("riddles.txt");
     for(int i = 1; i <= 20; i++ )  
     {
-        getline(file_input, monster);
+        getline(file_input, riddle);
         if (i == random);
         split(monster, '~', arr, 2);
     }
@@ -186,6 +286,7 @@ void BaseAction :: speak()
 
     if (answer == arr[1]) // Correct Answer
     {
+        party.MerchantMenu()
         // OPEN MERCHANT MENU
     }
 
@@ -196,15 +297,4 @@ void BaseAction :: speak()
 
 
 
-}
-
-
-
-
-
-
-int main()
-{
-
-    return 0;
 }

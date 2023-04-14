@@ -9,6 +9,7 @@
 #include "game.h"
 #include "party.h"
 #include "Map.h"
+//#include "BaseAction.h"
 using namespace std;
 
 
@@ -448,21 +449,17 @@ void actionMenu(Game game, Party party) {
 }
 
 int main() {
+    // Create Class Objects 
     Game testGame = Game();
-
     Party testParty = Party(testGame);
-
-    cout << endl;
-    cout << "GOLD: " << testParty.gold << endl;
-    cout << endl;
+    //baseAction testAction = baseAction();
 
     merchantMenu(testParty);
-
-    cout << "GOLD: " << testParty.gold << endl;
 
 
     //Create Seed For Random Numbers
     srand(time(NULL));  // SEEDS WITH RANDOM TIME
+
 
     //Initialize New Game Map & Set Player and Exit Positions
     Map gameMap;
@@ -500,19 +497,119 @@ int main() {
             gameMap.addRoom(random1, random2);
             counter2++;
         }
-    }
+    } 
 
-    //TEST CODE
-    gameMap.displayMap();
-    // cout << gameMap.getRoomCount() << endl;
 
-    // gameMap.move('s');
-    // gameMap.move('d');
-    // gameMap.displayMap();    
 
-    while(testGame.lose == false && testGame.win == false) {
+
+
+
+
+    // MAIN GAME LOOP 
+    while(testGame.lose == false && testGame.win == false) 
+    {
+        // Declare Variables (INTERNAL TO LOOP)
+        int selection;
+        char direction = 'x';
+        bool selection_validity = true;
+
+
+        // Display Party Status, Map, & Recieve Input
         testParty.printStatus();
         gameMap.displayMap();
 
+
+        cout << "Select one:" << endl;
+        cout << "1. Move" << endl;
+        cout << "2. Investigate" << endl;
+        cout << "3. Pick a Fight" << endl;
+        cout << "4. Cook and Eat" << endl;
+        cout << "5. Give up" << endl;
+        cin >> selection;
+
+
+        if(selection == 1) // MOVEMENT
+        {
+            // Loop Until Valid Input Recieved 
+            while(direction == 'x')
+            {
+                cout << "Where would you like to move?" << endl;
+                cout << "w (up), a (left), s (down), or d (right)" << endl;
+                cin >> direction;
+
+                if(direction == 'w')
+                {
+                    gameMap.move('w'); // Move Up
+                    break;
+                }
+
+                else if(direction == 'a')
+                {
+                    gameMap.move('a'); // Move Left
+                    break;
+                }
+
+                else if(direction == 's')
+                {
+                    gameMap.move('s'); // Move Down
+                    break;
+                }
+
+                else if(direction == 'd')
+                {
+                    gameMap.move('d'); // Move Right
+                    break; 
+                }
+
+                else // Loop through again if invalid input
+                {
+                    cout << "Invalid Input. Please Enter A Valid Character" << endl;
+                    direction = 'x';
+                }
+            }
+        }
+
+
+        else if(selection == 2)  // INVESTIGATE
+        {
+            testAction.investigate(testGame, testParty);
+        }
+
+
+        else if(selection == 3)  // MOSTER FIGHT 
+        {
+            testAction.monsterFight(testGame, testParty);
+        }
+
+
+        else if(selection == 4) // COOK
+        {
+            testAction.cook(testGame, testParty);
+        }
+
+
+        else if(selection == 5) // GIVE UP
+        {
+            testAction.giveUp(testGame, testParty);
+        }
+
+        else
+        {
+            cout << "Invalid Input. Please Enter A Number 1-5" << endl;
+            selection_validity = false;
+        }
+
+
+
+
+        // Continue If Selection Is Valid
+        if (selection_validity == true)
+        {
+            // AFTER BASE ACTION CODE HERE
+        }
+
+
+
+ 
     }
 }
