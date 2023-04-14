@@ -1,12 +1,14 @@
 #include <iostream>
+#include "game.h"
+#include "party.h"
 using namespace std;
 
 
-class baseAction()
+class baseAction
 {
     public:
     // Normal Space Actions
-    void investigate();  // Investigate Current Spot & Return Findings
+    void investigate(Game game, Party party);  // Investigate Current Spot & Return Findings
     void monsterFight();   // Initiates Monster Fight
     void cook();   // Display Cooking Menu and Loop 
 
@@ -19,4 +21,4 @@ class baseAction()
     // Anytime Actions
     void giveUp();   // Display Game Ending Conditons
 
-}
+};

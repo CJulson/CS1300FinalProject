@@ -1,4 +1,6 @@
 #include "BaseAction.h"
+#include "game.h"
+#include "party.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -63,7 +65,7 @@ int split(string input_string, char seperator, string arr[], int arr_size)
 
 
 // INVESTIGATE UNEXPLORED SPACE
-void BaseAction :: investigate()
+void baseAction::investigate(Game game, Party party)
 {
 
     // Prepare Random Number Generation
@@ -73,7 +75,7 @@ void BaseAction :: investigate()
     // 10% Chance To Add Key
     if(random == 1)
     {
-        //ADD KEY
+        party.keys++;
     }
 
     // 20% Chance To Find Treasure

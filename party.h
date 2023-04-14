@@ -30,11 +30,11 @@ public:
     // void setParty(string name1, string name2, string name3, string name4, string name5);
 
     int gold = 100;
-    int ingredients;
-    int cookware[3];
-    int weapons[5];
-    int armor;
-    int treasures[5];
+    int ingredients=0;
+    int cookware[3]={0,0,0};
+    int weapons[5]={0,0,0,0,0};
+    int armor=0;
+    int treasures[5]={0,0,0,0,0};
 
     int keys;
 

@@ -592,58 +592,58 @@ void Map::displayMap()
 
 
 
-// MAIN FUNCTION (CREATE RANDOMIZED MAP AND ALLOW UPDATES)
-int main()
-{
-    //Create Seed For Random Numbers
-    srand(time(NULL));  // SEEDS WITH RANDOM TIME
+// // MAIN FUNCTION (CREATE RANDOMIZED MAP AND ALLOW UPDATES)
+// int main()
+// {
+//     //Create Seed For Random Numbers
+//     srand(time(NULL));  // SEEDS WITH RANDOM TIME
 
-    //Initialize New Game Map & Set Player and Exit Positions
-    Map gameMap;
-    Map();
-
-
-    // SET NPC LOCATIONS
-    int counter1 = 0;
-    while (counter1 < 5) // WHY CANT I USE MAX NPC INT???
-    {
-        // Random Numbers
-        int random1 = rand() % 13;
-        int random2 = rand() % 13;
-
-        // Add Location If Available
-        if (gameMap.isFreeSpace(random1, random2) == true)
-        {
-            gameMap.addNPC(random1, random2);
-            counter1++;
-        }
-    }
+//     //Initialize New Game Map & Set Player and Exit Positions
+//     Map gameMap;
+//     Map();
 
 
-    //Set Room Locations 
-    int counter2 = 0;
-    while (counter2 < 5) // WHY CANT I USE MAX ROOMS?
-    {
-        // Random Numbers
-        int random1 = rand() % 13;
-        int random2 = rand() % 13;
+//     // SET NPC LOCATIONS
+//     int counter1 = 0;
+//     while (counter1 < 5) // WHY CANT I USE MAX NPC INT???
+//     {
+//         // Random Numbers
+//         int random1 = rand() % 13;
+//         int random2 = rand() % 13;
 
-        // Add Location If Available
-        if (gameMap.isFreeSpace(random1, random2) == true)
-        {
-            gameMap.addRoom(random1, random2);
-            counter2++;
-        }
-    }
+//         // Add Location If Available
+//         if (gameMap.isFreeSpace(random1, random2) == true)
+//         {
+//             gameMap.addNPC(random1, random2);
+//             counter1++;
+//         }
+//     }
 
-    //TEST CODE
-    gameMap.displayMap();
-    cout << gameMap.getRoomCount() << endl;
 
-    gameMap.move('s');
-    gameMap.move('d');
-    gameMap.displayMap();
+//     //Set Room Locations 
+//     int counter2 = 0;
+//     while (counter2 < 5) // WHY CANT I USE MAX ROOMS?
+//     {
+//         // Random Numbers
+//         int random1 = rand() % 13;
+//         int random2 = rand() % 13;
+
+//         // Add Location If Available
+//         if (gameMap.isFreeSpace(random1, random2) == true)
+//         {
+//             gameMap.addRoom(random1, random2);
+//             counter2++;
+//         }
+//     }
+
+//     //TEST CODE
+//     gameMap.displayMap();
+//     cout << gameMap.getRoomCount() << endl;
+
+//     gameMap.move('s');
+//     gameMap.move('d');
+//     gameMap.displayMap();
     
 
-    return 0;
-}
+//     return 0;
+// }

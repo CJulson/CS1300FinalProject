@@ -28,7 +28,7 @@ void Game::setLose() {
     lose = true;
 }
 void Game::checkLose() {
-    if(lose = true) {
+    if(lose == true) {
         cout << "Game over." << endl;
     }
 }

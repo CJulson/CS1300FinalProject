@@ -8,10 +8,11 @@
 #include "character.h"
 #include "game.h"
 #include "party.h"
+#include "Map.h"
 using namespace std;
 
 
-void merchantMenu(Party partyName) {
+void merchantMenu(Party &partyName) {
     bool exit = false;
     int start;
 
@@ -84,7 +85,7 @@ void merchantMenu(Party partyName) {
                 } else if(buyCookware == 1) {
                     cout << "How many would you like" << endl;
                     cin >> numCookware;
-                    if (numCookware > 0 && numCookware * 2 < partyName.gold) {//if they have enough gold
+                    if (numCookware > 0 && numCookware * 2 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numCookware << " Ceramic Pot(s) for " << 2*numCookware << " gold?(y/n)" << endl;
                         cin >> checkCookware;
                         if(checkCookware == 'n') {
@@ -104,7 +105,7 @@ void merchantMenu(Party partyName) {
                 } else if (buyCookware == 2) {
                     cout << "How many would you like" << endl;
                     cin >> numCookware;
-                    if (numCookware > 0 && numCookware * 10 < partyName.gold) {//if they have enough gold
+                    if (numCookware > 0 && numCookware * 10 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numCookware << " Frying Pan(s) for " << 10*numCookware << " gold?(y/n)" << endl;
                         cin >> checkCookware;
                         if(checkCookware == 'n') {
@@ -124,7 +125,7 @@ void merchantMenu(Party partyName) {
                 } else if (buyCookware == 3) {
                     cout << "How many would you like" << endl;
                     cin >> numCookware;
-                    if (numCookware > 0 && numCookware * 10 < partyName.gold) {//if they have enough gold
+                    if (numCookware > 0 && numCookware * 10 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numCookware << " cauldron(s) for " << 20*numCookware << " gold?(y/n)" << endl;
                         cin >> checkCookware;
                         if(checkCookware == 'n') {
@@ -171,7 +172,7 @@ void merchantMenu(Party partyName) {
                 } else if(buyWeapons == 1) {
                     cout << "How many would you like" << endl;
                     cin >> numWeapons;
-                    if (numWeapons > 0 && numWeapons * 2 < partyName.gold) {//if they have enough gold
+                    if (numWeapons > 0 && numWeapons * 2 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numWeapons << " Stone Club(s) for " << 2*numWeapons << " gold?(y/n)" << endl;
                         cin >> checkWeapons;
                         if(checkWeapons == 'n') {
@@ -190,8 +191,8 @@ void merchantMenu(Party partyName) {
                     }
                 } else if (buyWeapons == 2) {
                     cout << "How many would you like" << endl;
-                    cin >> buyWeapons;
-                    if (numWeapons > 0 && numWeapons * 2 < partyName.gold) {//if they have enough gold
+                    cin >> numWeapons;
+                    if (numWeapons > 0 && numWeapons * 2 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numWeapons << " Iron Spear(s) for " << 2*numWeapons << " gold?(y/n)" << endl;
                         cin >> checkWeapons;
                         if(checkWeapons == 'n') {
@@ -210,8 +211,8 @@ void merchantMenu(Party partyName) {
                     }
                 } else if (buyWeapons == 3) {
                     cout << "How many would you like" << endl;
-                    cin >> buyWeapons;
-                    if (numWeapons > 0 && numWeapons * 5 < partyName.gold) {//if they have enough gold
+                    cin >> numWeapons;
+                    if (numWeapons > 0 && numWeapons * 5 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numWeapons << " (+1) Mythril Rapier for " << 5*numWeapons << " gold?(y/n)" << endl;
                         cin >> checkWeapons;
                         if(checkWeapons == 'n') {
@@ -230,8 +231,8 @@ void merchantMenu(Party partyName) {
                     }
                 }else if(buyWeapons == 4) {
                     cout << "How many would you like" << endl;
-                    cin >> buyWeapons;
-                    if (numWeapons > 0 && numWeapons * 15 < partyName.gold) {//if they have enough gold
+                    cin >> numWeapons;
+                    if (numWeapons > 0 && numWeapons * 15 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numWeapons << " (+2) Flaming Battle-Axe for " << 15*numWeapons << " gold?(y/n)" << endl;
                         cin >> checkWeapons;
                         if(checkWeapons == 'n') {
@@ -250,8 +251,8 @@ void merchantMenu(Party partyName) {
                     }
                 } else if(buyWeapons == 5) {
                     cout << "How many would you like" << endl;
-                    cin >> buyWeapons;
-                    if (numWeapons > 0 && numWeapons * 50 < partyName.gold) {//if they have enough gold
+                    cin >> numWeapons;
+                    if (numWeapons > 0 && numWeapons * 50 <= partyName.gold) {//if they have enough gold
                         cout << "You want to buy " << numWeapons << " (+3) Vorpal Longsword for " << 50*numWeapons << " gold?(y/n)" << endl;
                         cin >> checkWeapons;
                         if(checkWeapons == 'n') {
@@ -326,7 +327,7 @@ void merchantMenu(Party partyName) {
                 } else if(sellTreasure == 1) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
-                    if (numTreasure > 0 && numTreasure > partyName.treasures[0]) {//if they have enough gold
+                    if (numTreasure > 0 && numTreasure <= partyName.treasures[0]) {//if they have enough gold
                         cout << "You want to sell " << numTreasure << " Silver ring(s) for " << 10*numTreasure << " gold?(y/n)" << endl;
                         cin >> checkTreasure;
                         if(checkTreasure == 'n') {
@@ -346,7 +347,7 @@ void merchantMenu(Party partyName) {
                 } else if (sellTreasure == 2) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
-                    if (numTreasure > 0 && numTreasure > partyName.treasures[1]) {//if they have enough gold
+                    if (numTreasure > 0 && numTreasure <= partyName.treasures[1]) {//if they have enough gold
                         cout << "You want to sell " << numTreasure << " Ruby necklace(s) for " << 20*numTreasure << " gold?(y/n)" << endl;
                         cin >> checkTreasure;
                         if(checkTreasure == 'n') {
@@ -366,7 +367,7 @@ void merchantMenu(Party partyName) {
                 } else if (sellTreasure == 3) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
-                    if (numTreasure > 0 && numTreasure > partyName.treasures[2]) {//if they have enough gold
+                    if (numTreasure > 0 && numTreasure <= partyName.treasures[2]) {//if they have enough gold
                         cout << "You want to sell " << numTreasure << " Emerald brackelet(s) for " << 30*numTreasure << " gold?(y/n)" << endl;
                         cin >> checkTreasure;
                         if(checkTreasure == 'n') {
@@ -386,7 +387,7 @@ void merchantMenu(Party partyName) {
                 }else if(sellTreasure == 4) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
-                    if (numTreasure > 0 && numTreasure > partyName.treasures[3]) {//if they have enough gold
+                    if (numTreasure > 0 && numTreasure <= partyName.treasures[3]) {//if they have enough gold
                         cout << "You want to sell " << numTreasure << " Diamond circlets for " << 40*numTreasure << " gold?(y/n)" << endl;
                         cin >> checkTreasure;
                         if(checkTreasure == 'n') {
@@ -406,7 +407,7 @@ void merchantMenu(Party partyName) {
                 } else if(sellTreasure == 5) {
                     cout << "How many would you like to sell" << endl;
                     cin >> numTreasure;
-                    if (numTreasure > 0 && numTreasure > partyName.treasures[4]) {//if they have enough gold
+                    if (numTreasure > 0 && numTreasure <= partyName.treasures[4]) {//if they have enough gold
                         cout << "You want to sell " << numTreasure << " Ruby necklace(s) for " << 50*numTreasure << " gold?(y/n)" << endl;
                         cin >> checkTreasure;
                         if(checkTreasure == 'n') {
@@ -442,6 +443,9 @@ void merchantMenu(Party partyName) {
     }
 }
 
+void actionMenu(Game game, Party party) {
+    
+}
 
 int main() {
     Game testGame = Game();
@@ -456,5 +460,59 @@ int main() {
 
     cout << "GOLD: " << testParty.gold << endl;
 
-    testParty.printStatus();
+
+    //Create Seed For Random Numbers
+    srand(time(NULL));  // SEEDS WITH RANDOM TIME
+
+    //Initialize New Game Map & Set Player and Exit Positions
+    Map gameMap;
+    Map();
+
+
+    // SET NPC LOCATIONS
+    int counter1 = 0;
+    while (counter1 < 5) // WHY CANT I USE MAX NPC INT???
+    {
+        // Random Numbers
+        int random1 = rand() % 13;
+        int random2 = rand() % 13;
+
+        // Add Location If Available
+        if (gameMap.isFreeSpace(random1, random2) == true)
+        {
+            gameMap.addNPC(random1, random2);
+            counter1++;
+        }
+    }
+
+
+    //Set Room Locations 
+    int counter2 = 0;
+    while (counter2 < 5) // WHY CANT I USE MAX ROOMS?
+    {
+        // Random Numbers
+        int random1 = rand() % 13;
+        int random2 = rand() % 13;
+
+        // Add Location If Available
+        if (gameMap.isFreeSpace(random1, random2) == true)
+        {
+            gameMap.addRoom(random1, random2);
+            counter2++;
+        }
+    }
+
+    //TEST CODE
+    gameMap.displayMap();
+    // cout << gameMap.getRoomCount() << endl;
+
+    // gameMap.move('s');
+    // gameMap.move('d');
+    // gameMap.displayMap();    
+
+    while(testGame.lose == false && testGame.win == false) {
+        testParty.printStatus();
+        gameMap.displayMap();
+
+    }
 }
