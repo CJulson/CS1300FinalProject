@@ -43,6 +43,7 @@ public:
     Party(Game game_);
     void checkAnger();
     void checkLose();
+    void merchantMenu();
 
 
 };

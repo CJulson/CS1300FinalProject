@@ -61,14 +61,15 @@ int split(string input_string, char seperator, string arr[], int arr_size)
 
 }
 
-baseAction::baseAction() {
-    int x = 5 + 5;
+baseAction::baseAction(Game game_, Party party_) {
+    game = game_;
+    party = party_;
 }
 
 
 
 // INVESTIGATE UNEXPLORED SPACE
-void baseAction::investigate(Game game, Party party)
+void baseAction::investigate()
 {
 
     // Prepare Random Number Generation
@@ -118,7 +119,7 @@ void baseAction::investigate(Game game, Party party)
 
 
 // Monster Fight Function
-void baseAction::monsterFight(Game game, Party party)
+void baseAction::monsterFight()
 {
     // DECLARE VARIBALES
     ifstream file_input;
@@ -148,8 +149,9 @@ void baseAction::monsterFight(Game game, Party party)
     for(int i = 1; i <= counter; i++)  
     {
         getline(file_input, monster);
-        if (i == random);
-        split(monster, ',', arr, 2);
+        if (i == random) {
+            split(monster, ',', arr, 2);//only splits if random number matches line
+        }
     }
     file_input.close();
 
@@ -166,7 +168,7 @@ void baseAction::monsterFight(Game game, Party party)
 
 
 // Cook & Eat Function 
-void baseAction :: cook(Game game, Party party)
+void baseAction :: cook()
 {
     cout << "You have selected to cook" << endl;
     if(party.ingredients == 0) {
@@ -179,7 +181,7 @@ void baseAction :: cook(Game game, Party party)
                 haveCookware = true;
             }
         }
-        if(haveCookware = false) {
+        if(haveCookware == false) {
             cout << "Sorry you have no cookware to cook with." << endl;//checks if they have cookware
             return;
         }
@@ -200,9 +202,10 @@ void baseAction :: cook(Game game, Party party)
     while(exit == false) {
         int item;
         cout << "What cooking item would you like to use?" << endl;
-        cout << "Ceramic pot: " << party.cookware[0] << endl;
-        cout << "Frying pan: " << party.cookware[1] << endl;
-        cout << "Cauldron: " << party.cookware[2] << endl;
+        cout << "(1)Ceramic pot: " << party.cookware[0] << endl;
+        cout << "(2)Frying pan: " << party.cookware[1] << endl;
+        cout << "(3)Cauldron: " << party.cookware[2] << endl;
+        cout << "(4)Exit" << endl;
         cin >> item;
         switch(item) {
             case 1:
@@ -232,7 +235,7 @@ void baseAction :: cook(Game game, Party party)
                 } else {
                     cout << "You are cooking " << kilos << " kg of food with a Frying pan..." << endl;
                     party.ingredients -= kilos;
-                    int random = rand() % 11 + 1;
+                    int random = rand() % 11 + 1;//random chance calc
                     if(random == 1) {
                         cout << "Your cook failed, you lose the pan and the ingredients" << endl;
                         party.cookware[1]--;
@@ -245,16 +248,40 @@ void baseAction :: cook(Game game, Party party)
                 }
                 exit = true;
             break;
+            case 3:
+                if(party.cookware[2] < 1) {
+                    cout << "Sorry you don't have a Frying pan to cook with." << endl;
+                    break;
+                } else {
+                    cout << "You are cooking " << kilos << " kg of food with a Cauldron..." << endl;
+                    party.ingredients -= kilos;
+                    int random = rand() % 50 + 1;//random chance calc
+                    if(random == 1) {
+                        cout << "Your cook failed, you lose the Cauldron and the ingredients" << endl;
+                        party.cookware[2]--;
+                    } else {
+                        cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
+                        for(int i = 0; i < 5; i++) {
+                            party.members[i].fullness += kilos / 5;
+                        }
+                    }
+                }
+                exit = true;
+            break;
+            case 4:
+                exit = true;
+            default:
+                cout << "Invalid input try again." << endl;
+            break;
         }
     }
-
 }
 
 
 
 
 // NPC Speak Function (Puzzle)
-void baseAction :: speak(Game game, Party party)
+void baseAction :: speak()
 {
     // Declare Variables 
     ifstream file_input;
@@ -272,8 +299,9 @@ void baseAction :: speak(Game game, Party party)
     for(int i = 1; i <= 20; i++ )  
     {
         getline(file_input, riddle);
-        if (i == random);
-        split(monster, '~', arr, 2);
+        if (i == random){
+            split(riddle, '~', arr, 2);//splits only line matching random number
+        }
     }
     file_input.close();
 
@@ -286,7 +314,7 @@ void baseAction :: speak(Game game, Party party)
 
     if (answer == arr[1]) // Correct Answer
     {
-        party.MerchantMenu()
+        party.merchantMenu();
         // OPEN MERCHANT MENU
     }
 
@@ -297,4 +325,22 @@ void baseAction :: speak(Game game, Party party)
 
 
 
+}
+
+void baseAction::giveUp() {
+    cout << "Are you absolutely sure?(y/n)" << endl;
+    char input;
+    cin >> input;
+    bool exit = false;
+    while(exit == false) {
+        if(input == 'y') {
+            game.setLose();
+            exit = true;
+            return;
+        } else if (input == 'n') {
+            return;
+        } else {
+            cout << "Invalid input try again." << endl;
+        }
+    }
 }
