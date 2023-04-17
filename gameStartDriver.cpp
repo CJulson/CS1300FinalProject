@@ -9,14 +9,10 @@
 #include "game.h"
 #include "party.h"
 #include "Map.h"
-#include "baseAction.cpp"
-//#include "BaseAction.h"
+#include "BaseAction.h"
 using namespace std;
 
 
-// void actionMenu(Game game, Party party) {
-    
-// }
 
 int main() {
     // Create Class Objects 
@@ -38,7 +34,7 @@ int main() {
 
     // SET NPC LOCATIONS
     int counter1 = 0;
-    while (counter1 < 5) // WHY CANT I USE MAX NPC INT???
+    while (counter1 < 5) 
     {
         // Random Numbers
         int random1 = rand() % 13;
@@ -55,7 +51,7 @@ int main() {
 
     //Set Room Locations 
     int counter2 = 0;
-    while (counter2 < 5) // WHY CANT I USE MAX ROOMS?
+    while (counter2 < 5) 
     {
         // Random Numbers
         int random1 = rand() % 13;
@@ -68,8 +64,6 @@ int main() {
             counter2++;
         }
     } 
-
-
 
 
 
@@ -89,6 +83,22 @@ int main() {
         gameMap.displayMap();
 
 
+
+
+        // TEST IF ON DIFFERENT SPACES TO DISPLAY DIFFERENT MENUS
+        int row = gameMap.getPlayerRow(); 
+        int col = gameMap.getPlayerCol();
+        bool explored = gameMap.isExplored(row, col);
+        bool NPCLocation = gameMap.isNPCLocation(row, col);
+        bool roomLocation = gameMap.isRoomLocation(row, col);
+        bool freeSpace = gameMap.isFreeSpace(row, col);
+        bool dungeonExit = gameMap.isDungeonExit(row, col);
+
+
+
+        // Free Space Actions
+        if (freeSpace == true)
+        {
         cout << "Select one:" << endl;
         cout << "1. Move" << endl;
         cout << "2. Investigate" << endl;
@@ -110,24 +120,40 @@ int main() {
                 if(direction == 'w')
                 {
                     gameMap.move('w'); // Move Up
+                    if (explored != true)
+                    {
+                        // INCREASE SORECERS ANGER ONLY IF ALIVE
+                    }
                     break;
                 }
 
                 else if(direction == 'a')
                 {
                     gameMap.move('a'); // Move Left
+                    if (explored != true)
+                    {
+                        // INCREASE SORECERS ANGER ONLY IF ALIVE
+                    }
                     break;
                 }
 
                 else if(direction == 's')
                 {
                     gameMap.move('s'); // Move Down
+                    if (explored != true) // Increase Anger
+                    {
+                        // INCREASE SORECERS ANGER ONLY IF ALIVE
+                    }
                     break;
                 }
 
                 else if(direction == 'd')
                 {
                     gameMap.move('d'); // Move Right
+                    if (explored != true)
+                    {
+                        // INCREASE SORECERS ANGER ONLY IF ALIVE
+                    }
                     break; 
                 }
 
@@ -176,12 +202,43 @@ int main() {
         if (selection_validity == true)
         {
             // AFTER BASE ACTION CODE HERE
+
+            
+        }
+
+        } // END OF FREE SPACE IF Statement
+
+        
+
+
+
+        // NPC Space Actions
+        else if(NPCLocation = true )
+        {
+            cout << "Select one:" << endl;
+            cout << "1. Move" << endl;
+            cout << "2. Speak to NPC" << endl;
+            cout << "3. Give Up" << endl;
+            cin >> selection;
         }
 
 
 
- 
+
+
+
+        // Room Space Actions
+        else if(roomLocation = true )
+        {
+            cout << "Select one:" << endl;
+            cout << "1. Move" << endl;
+            cout << "2. Open Door" << endl;
+            cout << "3. Give Up" << endl;
+            cin >> selection;
+        }
+        // CHECK CONDITIONS THAT COULD POTENTIALLY END GAME (PARTY DEAD, SORCERES ANGER, ECT...)
+        // ALSO CHECK FOR PARTY MEMBER CONDITIONS
+        testGame.checkLose();
+        testGame.checkWin();
     }
-    testGame.checkWin();
-    testGame.checkLose();
 }
