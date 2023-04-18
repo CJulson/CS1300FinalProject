@@ -17,3 +17,13 @@ Character::Character(string name_) {
     name = name_;
     fullness = 50;
 }
+
+int Character::checkAlive() {
+    if (fullness < 1) {
+        string newName = "Dead " + name;
+        name = newName;
+        return 0;
+    } else {
+        return 1;
+    }
+}

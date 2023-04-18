@@ -23,7 +23,7 @@ class Character {
     public:
 
         int fullness;
-        bool checkFullness();
+        int checkAlive();
 
         string name;
 

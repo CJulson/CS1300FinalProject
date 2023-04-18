@@ -16,7 +16,7 @@ using namespace std;
 //     }
 // }
 
-Party::Party(Game game_) {
+Party::Party(Game &game_) {
     string temp;
     cout << "Welcome to Dungeon Escape!" << endl;
     cout << "Please input the names of your party." << endl;
@@ -26,16 +26,22 @@ Party::Party(Game game_) {
         members[i-1] = Character(temp);
         cout << "Hi, " << temp << " welcome to dungeon esacpe!" << endl;
     }
-    int gold = 100;
-    int ingredients=0;
-    int cookware[3]={0,0,0};
-    int weapons[5]={0,0,0,0,0};
-    int armor=0;
-    int treasures[5]={0,0,0,0,0};
-    int keys = 0;
-    int roomsClear = 0;
-    int anger = 0;
-    Game game = game_;
+    gold = 100;
+    ingredients=0;
+    for(int i = 0; i < 3; i++) {
+        cookware[i] = 0;
+    }
+    for(int i = 0; i < 5; i++) {
+        weapons[i] = 0;
+    }
+    for(int i = 0; i < 5; i++) {
+        treasures[i] = 0;
+    }
+    armor=0;
+    keys = 0;
+    roomsClear = 0;
+    anger = 0;
+    game = game_;
 }
 
 bool Party::checkPartyLive() {
@@ -546,5 +552,23 @@ void Party::merchantMenu() {
         }
     }
 
+}
+
+Party::Party() {
+    gold = 100;
+    ingredients=0;
+    for(int i = 0; i < 3; i++) {
+        cookware[i] = 0;
+    }
+    for(int i = 0; i < 5; i++) {
+        weapons[i] = 0;
+    }
+    for(int i = 0; i < 5; i++) {
+        treasures[i] = 0;
+    }
+    armor=0;
+    keys = 0;
+    roomsClear = 0;
+    anger = 0;
 }
 

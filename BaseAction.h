@@ -9,7 +9,7 @@ class baseAction
     public:
     Game game;
     Party party;
-    baseAction(Game game, Party party);
+    baseAction(Game &game, Party &party);
     // Normal Space Actions
     void investigate();  // Investigate Current Spot & Return Findings
     void monsterFight();   // Initiates Monster Fight
@@ -23,5 +23,7 @@ class baseAction
 
     // Anytime Actions
     void giveUp();   // Display Game Ending Conditons
+
+    void doorOpen();
 
 };

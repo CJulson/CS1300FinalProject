@@ -61,7 +61,7 @@ int split(string input_string, char seperator, string arr[], int arr_size)
 
 }
 
-baseAction::baseAction(Game game_, Party party_) {
+baseAction::baseAction(Game &game_, Party &party_) {
     game = game_;
     party = party_;
 }
@@ -122,6 +122,7 @@ void baseAction::investigate()
 void baseAction::monsterFight()
 {
     // DECLARE VARIBALES
+    cout << "A monster is approaching" << endl;
     ifstream file_input;
     string line;
     string monster; 
@@ -141,10 +142,13 @@ void baseAction::monsterFight()
 
     // Prepare Random Number Generation
     srand(time(NULL));  // SEEDS WITH RANDOM TIME
-    int random = rand() % counter + 1;   // GIVES RANDOM NUMBER (1 - total monsters left)
+
 
 
     // Select Random Monster From File and Send To "Monster"
+    while(true)
+    {
+    int random = rand() % counter + 1;   // GIVES RANDOM NUMBER (1 - total monsters left)
     file_input.open("monsters.txt");
     for(int i = 1; i <= counter; i++)  
     {
@@ -155,13 +159,127 @@ void baseAction::monsterFight()
     }
     file_input.close();
 
+    if(stoi(arr[1]) == party.roomsClear + 1)  // Make sure level is equal to rooms cleared
+    {
+        break;
+    }
+    }
 
-    // Fight Monster
+
+    // FIGHT THE MONSTER
+    int choice;
+    cout << "You are being attacked by " << arr[0] << " level: " << arr[1] << endl;
+
+    bool haveWeapon = false;
+    for(int i = 0; i < 5; i++) {
+        if(party.weapons[i] > 0) {
+            haveWeapon = true;
+        }
+    }
+
+    if(haveWeapon == true) // Party Has Weapons
+    {
+        while(true)
+        {
+        cout << "What are you going to do?" << endl;
+        cout << "1. Fight" << endl;
+        cout << "2. Surrender" << endl;
+        cin >> choice;
+
+        if (choice == 1 || choice == 2)
+        {
+            break;
+        }
+
+        else
+        {
+            cout << "Invalid Input. Please Enter A Valid Number" << endl;
+        }
+        }
+    }
+
+
+    else  // Party Has No Weapons
+    {
+        while(true)
+        {
+        cout << "What are you going to do?" << endl;
+        cout << "1. Surrender" << endl;
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            break;
+        }
+
+        else
+        {
+            cout << "Invalid Input. Please Enter A Valid Number" << endl;
+        }
+        }
+    }
+
+
+    if(choice == 1)   // If Fight Is Chosen 
+    {
+        // Find Variables For Win / Lose Calculation
+        int r1 = rand() % 6 + 1;   // GIVES RANDOM NUMBER (1 - 6)
+        int r2 = rand() % 6 + 1;   // GIVES RANDOM NUMBER (1 - 6)
+        int d = 4; // Consant 
+        int c = stoi(arr[1]);  // Monster Level
+        int a = party.armor; // Number of Party Armor Sets
+
+
+        int w = 0;// MAKE CALCUATION FOR W BASED ON GITHUB INSTRUCTIONS
+        for(int i = 0; i < 5; i++) {
+            w += party.weapons[i];//counts number for weapons
+            if(i == 2) {
+                w += party.weapons[i] * 1;//math for adding bonus weapons
+            } else if (i == 3) {
+                w += party.weapons[i] * 2;
+            } else if (i == 4) {
+                w += party.weapons[i] * 3;
+            }
+        }
+
+        int fightWin = (r1 * w + d) - ((r2 * c) / a);
+        if(fightWin > 0) {
+            //won fight
+        } else {
+            //lost fight
+        }
+
+    }   
+
+
+    if(choice == 2)   // If Surrender Is Chosen 
+    {
+        bool exit = false;
+        cout << "You have chosen to surrender, a random member of your party is left behind..." << endl;
+        while(exit == false) {
+            int randNum = rand() % 6 + 1;
+            if(party.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+                continue;
+            } else {
+                party.members[randNum].fullness = 0;//kills party member
+                party.checkPartyLive();
+                party.members[randNum].checkAlive();
+                cout << party.members[randNum].name << " was left behind."<< endl;
+                exit = true;
+            }
+
+        }
+    }   
+
+
+
+
+
+    // Delete 
 
     return;
 
 }
-
 
 
 
@@ -335,7 +453,8 @@ void baseAction::giveUp() {
     while(exit == false) {
         if(input == 'y') {
             game.setLose();
-            exit = true;
+            cout << "Lose: " << game.lose << endl;
+            exit = true;//pass by reference issue ask TA :)
             return;
         } else if (input == 'n') {
             return;
@@ -343,4 +462,8 @@ void baseAction::giveUp() {
             cout << "Invalid input try again." << endl;
         }
     }
+}
+
+void baseAction::doorOpen() {
+
 }
