@@ -24,6 +24,7 @@ class Character {
 
         int fullness;
         int checkAlive();
+        bool checkDead;
 
         string name;
 

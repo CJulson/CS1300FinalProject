@@ -164,25 +164,25 @@ int main() {
 
         else if(selection == 2)  // INVESTIGATE
         {
-            testAction.investigate();
+            testAction.investigate(testParty);
         }
 
 
         else if(selection == 3)  // MOSTER FIGHT 
         {
-            testAction.monsterFight();
+            testAction.monsterFight(testParty);
         }
 
 
         else if(selection == 4) // COOK
         {
-            testAction.cook();
+            testAction.cook(testParty);
         }
 
 
         else if(selection == 5) // GIVE UP
         {
-            testAction.giveUp();
+            testAction.giveUp(testGame);
         }
 
         else
@@ -270,13 +270,13 @@ int main() {
             
             else if(selection == 2) // NPC SPEAK
             {
-                testAction.speak();
+                testAction.speak(testParty);
             }
 
 
             else if(selection == 3) // Give Up
             {
-                testAction.giveUp();
+                testAction.giveUp(testGame);
             }
 
             else
@@ -369,7 +369,7 @@ int main() {
 
             else if(selection == 3) // Give Up
             {
-                testAction.giveUp();
+                testAction.giveUp(testGame);
             }
 
 
@@ -400,7 +400,5 @@ int main() {
 
         testGame.checkLose();//check win/lose conditions
         testGame.checkWin();
-
-        cout << "End Loop Lose: " << testGame.lose << endl;
     }
 }

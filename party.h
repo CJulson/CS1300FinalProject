@@ -42,8 +42,8 @@ public:
     void printStatus();
     Party();
     Party(Game &game_);
-    void checkAnger();
-    void checkLose();
+    void checkAngerLose(Game &game);
+    //void checkLose(Game &game);
     void merchantMenu();
 
 

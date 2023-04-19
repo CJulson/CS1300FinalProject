@@ -69,7 +69,7 @@ baseAction::baseAction(Game &game_, Party &party_) {
 
 
 // INVESTIGATE UNEXPLORED SPACE
-void baseAction::investigate()
+void baseAction::investigate(Party &party_)
 {
 
     // Prepare Random Number Generation
@@ -80,35 +80,35 @@ void baseAction::investigate()
     if(random == 1)
     {
         cout << "You have found a key!" << endl;
-        party.keys++;
+        party_.keys++;
     }
 
     // 20% Chance To Find Treasure
     if (random == 2 || random == 3)
     {
         // ADD TREASURE (BASED ON ROOMS CLEARED?)
-        int temp = rand() % 101 + 1 + party.roomsClear * 10;
+        int temp = rand() % 101 + 1 + party_.roomsClear * 10;
         if(temp >= 90) {
             cout << "You have discovered a Gem-Encrusted Goblet!(Worth 50 gold)" << endl;
-            party.treasures[4]++;
+            party_.treasures[4]++;
         } else if (temp >= 75) {
             cout << "You have discovered a Diamond Circlet!(Worth 40 gold)" << endl;
-            party.treasures[3]++;
+            party_.treasures[3]++;
         } else if (temp >= 60) {
             cout << "You have discovered a Emerald Bracelet!(Worth 30 gold)" << endl;
-            party.treasures[2]++;
+            party_.treasures[2]++;
         } else if(temp >= 30) {
             cout << "You have discovered a Ruby Necklace!(Worth 20 gold)" << endl;
-            party.treasures[1]++;
+            party_.treasures[1]++;
         } else {
             cout << "You have discovered a Silver Ring!(Worth 10 gold)" << endl;
-            party.treasures[0]++;
+            party_.treasures[0]++;
         }
     }
 
     if (random == 4 || random == 5)
     {
-        monsterFight(); // Fight Random Monster
+        monsterFight(party_); // Fight Random Monster
     }
 
     return;
@@ -119,7 +119,7 @@ void baseAction::investigate()
 
 
 // Monster Fight Function
-void baseAction::monsterFight()
+void baseAction::monsterFight(Party &party_)
 {
     // DECLARE VARIBALES
     cout << "A monster is approaching" << endl;
@@ -159,7 +159,7 @@ void baseAction::monsterFight()
     }
     file_input.close();
 
-    if(stoi(arr[1]) == party.roomsClear + 1)  // Make sure level is equal to rooms cleared
+    if(stoi(arr[1]) == party_.roomsClear + 1)  // Make sure level is equal to rooms cleared
     {
         break;
     }
@@ -172,7 +172,7 @@ void baseAction::monsterFight()
 
     bool haveWeapon = false;
     for(int i = 0; i < 5; i++) {
-        if(party.weapons[i] > 0) {
+        if(party_.weapons[i] > 0) {
             haveWeapon = true;
         }
     }
@@ -227,18 +227,18 @@ void baseAction::monsterFight()
         int r2 = rand() % 6 + 1;   // GIVES RANDOM NUMBER (1 - 6)
         int d = 4; // Consant 
         int c = stoi(arr[1]);  // Monster Level
-        int a = party.armor; // Number of Party Armor Sets
+        int a = party_.armor; // Number of Party Armor Sets
 
 
         int w = 0;// MAKE CALCUATION FOR W BASED ON GITHUB INSTRUCTIONS
         for(int i = 0; i < 5; i++) {
-            w += party.weapons[i];//counts number for weapons
+            w += party_.weapons[i];//counts number for weapons
             if(i == 2) {
-                w += party.weapons[i] * 1;//math for adding bonus weapons
+                w += party_.weapons[i] * 1;//math for adding bonus weapons
             } else if (i == 3) {
-                w += party.weapons[i] * 2;
+                w += party_.weapons[i] * 2;
             } else if (i == 4) {
-                w += party.weapons[i] * 3;
+                w += party_.weapons[i] * 3;
             }
         }
 
@@ -258,13 +258,13 @@ void baseAction::monsterFight()
         cout << "You have chosen to surrender, a random member of your party is left behind..." << endl;
         while(exit == false) {
             int randNum = rand() % 6 + 1;
-            if(party.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+            if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
                 continue;
             } else {
-                party.members[randNum].fullness = 0;//kills party member
-                party.checkPartyLive();
-                party.members[randNum].checkAlive();
-                cout << party.members[randNum].name << " was left behind."<< endl;
+                party_.members[randNum].fullness = 0;//kills party member
+                party_.checkPartyLive();
+                party_.members[randNum].checkAlive();
+                cout << party_.members[randNum].name << " was left behind."<< endl;
                 exit = true;
             }
 
@@ -286,16 +286,16 @@ void baseAction::monsterFight()
 
 
 // Cook & Eat Function 
-void baseAction :: cook()
+void baseAction :: cook(Party &party_)
 {
     cout << "You have selected to cook" << endl;
-    if(party.ingredients == 0) {
+    if(party_.ingredients == 0) {
         cout << "Sorry you don't have any ingredients." << endl;//checks if they have ingredients
         return;
     } else {
         bool haveCookware = false;
         for(int i = 0; i < 3; i++) {
-            if (party.cookware[i] > 0) {
+            if (party_.cookware[i] > 0) {
                 haveCookware = true;
             }
         }
@@ -309,7 +309,7 @@ void baseAction :: cook()
     while(exit == false) {
         cout << "How many kg of food would you like to cook?(5kg = 1 fullness)" << endl;
         cin >> kilos;
-        if(kilos > party.ingredients) {
+        if(kilos > party_.ingredients) {
             cout << "You don't have that much try again." << endl;
         } else {
             exit = true;
@@ -320,67 +320,67 @@ void baseAction :: cook()
     while(exit == false) {
         int item;
         cout << "What cooking item would you like to use?" << endl;
-        cout << "(1)Ceramic pot: " << party.cookware[0] << endl;
-        cout << "(2)Frying pan: " << party.cookware[1] << endl;
-        cout << "(3)Cauldron: " << party.cookware[2] << endl;
+        cout << "(1)Ceramic pot: " << party_.cookware[0] << endl;
+        cout << "(2)Frying pan: " << party_.cookware[1] << endl;
+        cout << "(3)Cauldron: " << party_.cookware[2] << endl;
         cout << "(4)Exit" << endl;
         cin >> item;
         switch(item) {
             case 1:
-                if(party.cookware[0] < 1) {
+                if(party_.cookware[0] < 1) {
                     cout << "Sorry you don't have a Ceramic pot to cook with." << endl;
                     break;
                 } else {
                     cout << "You are cooking " << kilos << " kg of food with a Ceramic pot..." << endl;
-                    party.ingredients -= kilos;
+                    party_.ingredients -= kilos;
                     int random = rand() % 5 + 1;//random chance to break
                     if(random == 1) {
                         cout << "Your cook failed, you lose the pot and the ingredients" << endl;
-                        party.cookware[0]--;
+                        party_.cookware[0]--;
                     } else {
                         cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
                         for(int i = 0; i < 5; i++) {
-                            party.members[i].fullness += kilos / 5;
+                            party_.members[i].fullness += kilos / 5;
                         }
                     }
                 }
                 exit = true;
             break;
             case 2:
-                if(party.cookware[1] < 1) {
+                if(party_.cookware[1] < 1) {
                     cout << "Sorry you don't have a Frying pan to cook with." << endl;
                     break;
                 } else {
                     cout << "You are cooking " << kilos << " kg of food with a Frying pan..." << endl;
-                    party.ingredients -= kilos;
+                    party_.ingredients -= kilos;
                     int random = rand() % 11 + 1;//random chance calc
                     if(random == 1) {
                         cout << "Your cook failed, you lose the pan and the ingredients" << endl;
-                        party.cookware[1]--;
+                        party_.cookware[1]--;
                     } else {
                         cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
                         for(int i = 0; i < 5; i++) {
-                            party.members[i].fullness += kilos / 5;
+                            party_.members[i].fullness += kilos / 5;
                         }
                     }
                 }
                 exit = true;
             break;
             case 3:
-                if(party.cookware[2] < 1) {
+                if(party_.cookware[2] < 1) {
                     cout << "Sorry you don't have a Frying pan to cook with." << endl;
                     break;
                 } else {
                     cout << "You are cooking " << kilos << " kg of food with a Cauldron..." << endl;
-                    party.ingredients -= kilos;
+                    party_.ingredients -= kilos;
                     int random = rand() % 50 + 1;//random chance calc
                     if(random == 1) {
                         cout << "Your cook failed, you lose the Cauldron and the ingredients" << endl;
-                        party.cookware[2]--;
+                        party_.cookware[2]--;
                     } else {
                         cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
                         for(int i = 0; i < 5; i++) {
-                            party.members[i].fullness += kilos / 5;
+                            party_.members[i].fullness += kilos / 5;
                         }
                     }
                 }
@@ -399,7 +399,7 @@ void baseAction :: cook()
 
 
 // NPC Speak Function (Puzzle)
-void baseAction :: speak()
+void baseAction :: speak(Party &party_)
 {
     // Declare Variables 
     ifstream file_input;
@@ -432,28 +432,27 @@ void baseAction :: speak()
 
     if (answer == arr[1]) // Correct Answer
     {
-        party.merchantMenu();
+        party_.merchantMenu();
         // OPEN MERCHANT MENU
     }
 
     else // Incorrect Answer
     {
-        monsterFight();
+        monsterFight(party_);
     }
 
 
 
 }
 
-void baseAction::giveUp() {
+void baseAction::giveUp(Game &game_) {
     cout << "Are you absolutely sure?(y/n)" << endl;
     char input;
     cin >> input;
     bool exit = false;
     while(exit == false) {
         if(input == 'y') {
-            game.setLose();
-            cout << "Lose: " << game.lose << endl;
+            game_.lose = true;
             exit = true;//pass by reference issue ask TA :)
             return;
         } else if (input == 'n') {

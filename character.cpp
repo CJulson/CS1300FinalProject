@@ -11,17 +11,22 @@ using namespace std;
 Character::Character() {
     name = "";
     fullness = 50;
+    checkDead = false;//makes sure character doesn't get dead checked twice
 }
 
 Character::Character(string name_) {
     name = name_;
     fullness = 50;
+    checkDead = false;//makes sure character doesn't get dead checked twice
 }
 
 int Character::checkAlive() {
-    if (fullness < 1) {
-        string newName = "Dead " + name;
+    if (fullness < 1 && checkDead == false) {
+        string newName = name + " Deceased.";
         name = newName;
+        checkDead = true;
+        return 0;
+    }else if(fullness < 1 && checkDead == true) {
         return 0;
     } else {
         return 1;

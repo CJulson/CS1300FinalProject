@@ -99,15 +99,15 @@ void Party::printStatus() {
     cout << "+-------------+" << endl;
 }
 
-void Party::checkAnger() {
-    if(anger > 99) {
-        game.lose = false;
-    } else {
-        return;
-    }
-}
+// void Party::checkAnger(Game &game) {
+//     if(anger > 99) {
+//         game.lose = false;
+//     } else {
+//         return;
+//     }
+// }
 
-void Party::checkLose() {
+void Party::checkAngerLose(Game &game) {
     if(anger > 99) {
         cout << "The wizard has grown too angry and sealed the exit! You perish in the dungeon." << endl;
         game.setLose();
