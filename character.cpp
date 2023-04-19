@@ -20,15 +20,15 @@ Character::Character(string name_) {
     checkDead = false;//makes sure character doesn't get dead checked twice
 }
 
-int Character::checkAlive() {
+bool Character::checkAlive() {
     if (fullness < 1 && checkDead == false) {
-        string newName = name + " Deceased.";
+        string newName = name + " - Deceased.";
         name = newName;
         checkDead = true;
-        return 0;
+        return false;
     }else if(fullness < 1 && checkDead == true) {
-        return 0;
+        return false;
     } else {
-        return 1;
+        return true;
     }
 }

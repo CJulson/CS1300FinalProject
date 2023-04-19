@@ -390,11 +390,10 @@ int main() {
         // ALSO CHECK FOR PARTY MEMBER CONDITIONS
 
         //Check if party members alive and updates names/game status
-        int sum = 0;
         for(int i =0; i < 5; i++) {
-            sum += testParty.members[i].checkAlive();
+            testParty.members[i].checkAlive();//runs check name on every party member
         }
-        if(testParty.checkPartyLive() == false) {
+        if(testParty.checkPartyLive() == false) {//checks that at least one party member is alive
             testGame.setLose();
         }
 

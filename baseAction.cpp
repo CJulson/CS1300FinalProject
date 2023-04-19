@@ -8,7 +8,7 @@
 #include <cmath>
 #include <iomanip>
 #include <cstdlib>
-
+#include <vector>
 using namespace std;
 
 
@@ -209,6 +209,22 @@ void baseAction::monsterFight(Party &party_)
 
         if (choice == 1)
         {
+            bool exit = false;
+             cout << "You have chosen to surrender, a random member of your party is left behind..." << endl;
+            while(exit == false) {
+                int randNum = rand() % 5;
+            if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+                int x = 1 + 1;
+            } else {
+                party_.members[randNum].fullness = 0;//kills party member
+                cout << party_.members[randNum].name << " was left behind."<< endl;
+                party_.checkPartyLive();
+                party_.members[randNum].checkAlive();
+                exit = true;
+            }
+
+        }
+
             break;
         }
 
@@ -217,6 +233,7 @@ void baseAction::monsterFight(Party &party_)
             cout << "Invalid Input. Please Enter A Valid Number" << endl;
         }
         }
+        return;
     }
 
 
@@ -245,8 +262,43 @@ void baseAction::monsterFight(Party &party_)
         int fightWin = (r1 * w + d) - ((r2 * c) / a);
         if(fightWin > 0) {
             //won fight
+            //delete the monster
+            cout << "You win!" << endl;
+            cout << "You have defeated the " << arr[0] << endl;
+            cout << "You gain " << 10 * c << " gold pieces!" << endl;
+            party_.gold += c * 10;
+            cout << "You gain " << 5 * c << " lbs of food!" << endl;
+            party_.ingredients += c * 5;
+            int keyDrop = rand() % 11 + 1;
+            if(keyDrop == 1) {
+                cout << "The monster had dropped a key!" << endl;
+                party_.keys ++;
+            }
+
+            //delete monster from file
         } else {
             //lost fight
+            cout << "You have lost" << endl;
+            cout << "You have been defeated by the " << arr[0] << endl;
+            cout << "You lose " << party_.gold / 4 << " gold." << endl;
+            party_.gold -= party_.gold / 4;
+            int randFood = rand() % 31 + 1;
+            cout << "You lose " << randFood << " lbs of ingredients." << endl;
+            party_.ingredients -= randFood;
+            for(int i = 0; i < 5; i++) {
+                int randDie;
+                int tempArmor = party_.armor;//armor value to interact with
+                if(tempArmor > 0) {
+                    randDie = rand() % 21 + 1;//chance decreases if they have armor
+                    tempArmor--;
+                } else {
+                    randDie = rand() % 11 + 1;//if they don't have armor
+                }
+                if (randDie == 1) {
+                    cout << party_.members[i].name << " has been slain by the " << arr[0] << endl;
+                    party_.members[i].fullness = 0;
+                }
+            }
         }
 
     }   
@@ -257,14 +309,15 @@ void baseAction::monsterFight(Party &party_)
         bool exit = false;
         cout << "You have chosen to surrender, a random member of your party is left behind..." << endl;
         while(exit == false) {
-            int randNum = rand() % 6 + 1;
+            int randNum = rand() % 5;
             if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
-                continue;
+                int x = 1 + 1;
             } else {
+                cout << "Random num: " << randNum << endl;
                 party_.members[randNum].fullness = 0;//kills party member
+                cout << party_.members[randNum].name << " was left behind."<< endl;
                 party_.checkPartyLive();
                 party_.members[randNum].checkAlive();
-                cout << party_.members[randNum].name << " was left behind."<< endl;
                 exit = true;
             }
 
@@ -340,7 +393,10 @@ void baseAction :: cook(Party &party_)
                     } else {
                         cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
                         for(int i = 0; i < 5; i++) {
-                            party_.members[i].fullness += kilos / 5;
+                            if(party_.members[i].checkAlive() == true) {//wont add fullness if the member isn't alive
+                                //cout << "Fullness: " << party_.members[i].fullness << endl;
+                                party_.members[i].fullness += kilos / 5;
+                            }
                         }
                     }
                 }
@@ -360,7 +416,10 @@ void baseAction :: cook(Party &party_)
                     } else {
                         cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
                         for(int i = 0; i < 5; i++) {
-                            party_.members[i].fullness += kilos / 5;
+                            if(party_.members[i].checkAlive() == true) {//wont add fullness if the member isn't alive
+                                //cout << "Fullness: " << party_.members[i].fullness << endl;
+                                party_.members[i].fullness += kilos / 5;
+                            }
                         }
                     }
                 }
@@ -380,7 +439,10 @@ void baseAction :: cook(Party &party_)
                     } else {
                         cout << "Your cook succeeded! Your party gains " << kilos / 5 << " fullness." << endl;
                         for(int i = 0; i < 5; i++) {
-                            party_.members[i].fullness += kilos / 5;
+                            if(party_.members[i].checkAlive() == true) {//wont add fullness if the member isn't alive
+                                //cout << "Fullness: " << party_.members[i].fullness << endl;
+                                party_.members[i].fullness += kilos / 5;
+                            }
                         }
                     }
                 }

@@ -47,7 +47,7 @@ Party::Party(Game &game_) {
 bool Party::checkPartyLive() {
     int liveCount = 0;
     //bool deadIndex[5] = {0,0,0,0,0};
-    for(int i = 1; i < 6; i++) {
+    for(int i = 0; i < 5; i++) {
         if(members[i].fullness > 1) {
             liveCount++;
             //deadIndex[i] = 1;
@@ -169,6 +169,7 @@ void Party::merchantMenu() {
                         cout << "Thanks for your purchase" << endl;
                     } else {
                         cout << "Invalid input." << endl;
+                        break;
                     }
                 }
 
@@ -206,11 +207,13 @@ void Party::merchantMenu() {
                             cout << "Thanks for your purchase." << endl;
                         } else {
                             cout << "Invalid input." << endl;
+                            break;
                         }
                     } else if (numCookware > 0 && numCookware * 2 > gold){
                         cout << "Insufficient funds." << endl;//prints they don't have enough gold
                     } else {
                         cout << "Invalid input" << endl;
+                        break;
                     }
                 } else if (buyCookware == 2) {
                     cout << "How many would you like" << endl;
@@ -279,6 +282,7 @@ void Party::merchantMenu() {
 
                 if(buyWeapons > 6 || buyWeapons < 1) {
                     cout << "Invalid input." << endl;
+                    break;
                 } else if(buyWeapons == 1) {
                     cout << "How many would you like" << endl;
                     cin >> numWeapons;
