@@ -1,6 +1,7 @@
 #include "BaseAction.h"
 #include "game.h"
 #include "party.h"
+#include "Map.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -84,7 +85,7 @@ void baseAction::investigate(Party &party_)
     }
 
     // 20% Chance To Find Treasure
-    if (random == 2 || random == 3)
+    else if (random == 2 || random == 3)
     {
         // ADD TREASURE (BASED ON ROOMS CLEARED?)
         int temp = rand() % 101 + 1 + party_.roomsClear * 10;
@@ -106,9 +107,13 @@ void baseAction::investigate(Party &party_)
         }
     }
 
-    if (random == 4 || random == 5)
+    else if (random == 4 || random == 5)
     {
         monsterFight(party_); // Fight Random Monster
+    }
+
+    else {
+        cout << "Nothing was found" << endl;
     }
 
     return;
@@ -461,7 +466,7 @@ void baseAction :: cook(Party &party_)
 
 
 // NPC Speak Function (Puzzle)
-void baseAction :: speak(Party &party_)
+void baseAction :: speak(Party &party_, Map &map)
 {
     // Declare Variables 
     ifstream file_input;
@@ -503,7 +508,8 @@ void baseAction :: speak(Party &party_)
         monsterFight(party_);
     }
 
-
+    map.removeNPC(map.getPlayerRow(), map.getPlayerCol());//removes npc
+    map.isFreeSpace(map.getPlayerRow(), map.getPlayerCol());
 
 }
 
