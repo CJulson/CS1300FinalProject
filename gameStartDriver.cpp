@@ -12,9 +12,25 @@
 #include "BaseAction.h"
 using namespace std;
 
-
+void sortScores(vector<int> &scores) {
+    int temp;
+    for(int i = 0; i < scores.size(); i++) {
+        for(int j = 0; j < scores.size() - 1; j++) {
+            if(scores.at(j) < scores.at(j+1)) {
+                temp = scores.at(j+1);
+                scores.at(j+1) = scores.at(j);
+                scores.at(j) = temp;
+            }
+        }
+    }
+    return;
+}
 
 int main() {
+    int score = 0;//score count
+    string groupName;
+    vector <int>scores = {};
+
     // Create Class Objects 
     Game testGame = Game();
     Party testParty = Party(testGame);
@@ -68,6 +84,7 @@ int main() {
     // MAIN GAME LOOP 
     while(testGame.lose == false && testGame.win == false) 
     {
+        score++;//each action they make increases the score
         
         // Declare Variables (INTERNAL TO LOOP)
         int selection;
@@ -119,6 +136,8 @@ int main() {
                     if (explored != true)
                     {
                         // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        testParty.anger++;
+
                     }
                     break;
                 }
@@ -129,6 +148,7 @@ int main() {
                     if (explored != true)
                     {
                         // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        testParty.anger++;
                     }
                     break;
                 }
@@ -139,6 +159,7 @@ int main() {
                     if (explored != true) // Increase Anger
                     {
                         // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        testParty.anger++;
                     }
                     break;
                 }
@@ -149,6 +170,7 @@ int main() {
                     if (explored != true)
                     {
                         // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        testParty.anger++;
                     }
                     break; 
                 }
@@ -270,7 +292,7 @@ int main() {
             
             else if(selection == 2) // NPC SPEAK
             {
-                testAction.speak(testParty);
+                testAction.speak(testParty, gameMap);
             }
 
 
@@ -363,7 +385,7 @@ int main() {
             
             else if(selection == 2) // Open Door
             {
-                testAction.doorOpen();
+                testAction.doorOpen(testParty, gameMap);
             }
 
 
@@ -381,8 +403,78 @@ int main() {
 
 
         } // End of Room Space Actions
-        
-        
+
+
+        // MISFORTUNES
+        if(selection != 1)
+        {
+            //Generate Random Number 1-10
+            int rand_num = (rand() % 10) + 1;
+
+            if(rand_num == 1 || rand_num == 2 || rand_num == 3 || rand_num == 4) // 40% Chance Misfortune Happens 
+            {
+                //Generate New Random Number 1-10
+                int rand_num2 = (rand() % 10) + 1;
+
+
+                if(rand_num2 == 1 || rand_num2 == 2 || rand_num2 == 3)  // ROBBERY
+                {
+                    cout << "OH NO! Your team was robbed by dungeon bandits!" << endl;
+
+                    // Randomly Choose Party Item To Lose
+                    if(rand_num2 == 1)  // LOSE 10kg Ingredients 
+                    {
+                        // LOSE 10kg INGREDIENTS
+                    }
+
+                    else if(rand_num2 == 2) // LOSE ARMOR
+                    {
+                        // LOSE ARMOR
+                    }
+
+                    else  // LOSE COOKWARE
+                    {
+                        // LOSE COOKWARE
+                    }
+                }
+
+
+                else if(rand_num2 == 4 || rand_num2 == 5 || rand_num2 == 6)  // FOOD POISONING
+                {
+                    cout << "Due to food poisoning, 1 party member has passed away" << endl;
+                    // PARTY MEMBER DECREASE BY 1
+                    bool exit = false;
+                    while(exit == false) {
+                        int randNum = rand() % 5;
+                        if(testParty.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+                            int x = 1 + 1;
+                        } else {
+                            cout << "Random num: " << randNum << endl;
+                            testParty.members[randNum].fullness = 0;//kills party member
+                            cout << testParty.members[randNum].name << " was left behind."<< endl;
+                            testParty.checkPartyLive();
+                            testParty.members[randNum].checkAlive();
+                            exit = true;
+                        }
+
+        }
+                }
+
+
+                else if(rand_num2 == 7 || rand_num2 == 8 || rand_num2 == 9)  // LOCKED IN ROOM
+                {
+                    if(roomLocation == true && selection == 2) // Only Can Happen If Locked Room 
+                    {
+
+                    }
+                }
+
+                else if(rand_num2 == 10)  // WEAPON BREAK
+                {
+                    //WEAPON BREAK (ARE THEY STORED IN ARRAY?)
+                }
+            }
+        }
         
         
         
@@ -400,4 +492,12 @@ int main() {
         testGame.checkLose();//check win/lose conditions
         testGame.checkWin();
     }
+
+    scores.push_back(score);//saves score to score vector
+    sortScores(scores);
+
+    fstream scoreFile("scores.txt");
+
+
+
 }
