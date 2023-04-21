@@ -26,6 +26,24 @@ void sortScores(vector<int> &scores) {
     return;
 }
 
+void printScores(vector<int> &scores) {
+    fstream scoreFile("scores.txt");
+    string line;
+    int i = 0;
+    while(getline(scoreFile,line)) {
+        if(i == 0) {
+            i++;
+        } else {
+            scores.push_back(line);
+        }
+    }
+    sortScores(scores);
+
+    
+
+    scoreFile.close()
+}
+
 int main() {
     int score = 0;//score count
     string groupName;
@@ -494,10 +512,5 @@ int main() {
     }
 
     scores.push_back(score);//saves score to score vector
-    sortScores(scores);
-
-    fstream scoreFile("scores.txt");
-
-
 
 }
