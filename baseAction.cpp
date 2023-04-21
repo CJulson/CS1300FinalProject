@@ -49,7 +49,7 @@ int split(string input_string, char seperator, string arr[], int arr_size)
         num_splits = -1;
         return num_splits;
     }
-  
+
     else if (input_string.length() == 0)
     {
         return 0;
@@ -279,7 +279,7 @@ void baseAction::monsterFight(Party &party_)
                 cout << "The monster had dropped a key!" << endl;
                 party_.keys ++;
             }
-
+            party_.monstersDefeated++;
             //delete monster from file
         } else {
             //lost fight
@@ -318,7 +318,6 @@ void baseAction::monsterFight(Party &party_)
             if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
                 int x = 1 + 1;
             } else {
-                cout << "Random num: " << randNum << endl;
                 party_.members[randNum].fullness = 0;//kills party member
                 cout << party_.members[randNum].name << " was left behind."<< endl;
                 party_.checkPartyLive();
@@ -328,12 +327,6 @@ void baseAction::monsterFight(Party &party_)
 
         }
     }   
-
-
-
-
-
-    // Delete 
 
     return;
 
@@ -531,6 +524,289 @@ void baseAction::giveUp(Game &game_) {
     }
 }
 
-void baseAction::doorOpen() {
 
+
+
+//OPEN DOOR FUNCTION
+void baseAction::doorOpen(Party &party_, Map &map) 
+{
+    // Prepare Random Number Generation
+    srand(time(NULL));  // SEEDS WITH RANDOM TIME
+
+
+
+    // TEST FOR HAVING A KEY
+    bool keys = false;
+    if(party.keys > 0) {
+        keys = true;
+    }
+
+
+
+    if(keys == false) // No Keys = Solve Riddle 
+    {
+        cout << "In Order To Enter The Room, You Must Win A Game Of Rock, Paper, Scissors" << endl;
+        int counter;
+
+        while(true)
+        {
+            // Random Number 1-3
+            int enemy = rand() %3 + 1;
+
+            int choice;
+            cout << "What Do You Choose" << endl;
+            cout << "1. Rock" << endl;
+            cout << "2. Paper" << endl;
+            cout << "3. Scissors" << endl;
+            cin >> choice;
+
+
+            if (choice == 1) // Rock is Chosen
+            {
+                if(enemy == 1) // Rock
+                {
+                    cout << "Enemy Chose Rock" << endl;
+                    cout << "Tie... Try Again" << endl;
+                    counter++;
+                }
+
+                if(enemy == 2) // Paper
+                {
+                    cout << "Enemy Chose Paper" << endl;
+                    cout << "You Lose, A Party Member Has Deceased" << endl;
+                    bool exit = false;
+                    while(exit == false) {
+                        int randNum = rand() % 5;
+                        if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+                            int x = 1 + 1;
+                        } else {
+                            party_.members[randNum].fullness = 0;//kills party member
+                            cout << party_.members[randNum].name << " was left behind."<< endl;
+                            party_.checkPartyLive();
+                            party_.members[randNum].checkAlive();
+                            exit = true;
+                        }
+
+                    }
+                    // KILL PARTY MEMBER
+                    break;
+                }
+
+                if(enemy == 3) // Scissors
+                {
+                    cout << "Enemy Chose Scissors" << endl;
+                    cout << "You Win! You May Enter The Room" << endl;
+                    keys = true;
+                    break;
+                }
+            }
+
+            if (choice == 2) // Paper is Chosen
+            {
+                if(enemy == 1) // Rock
+                {
+                    cout << "Enemy Chose Rock" << endl;
+                    cout << "You Win! You May Enter The Room" << endl;
+                    keys = true;
+                    break;
+                }
+
+                if(enemy == 2) // Paper
+                {
+                    cout << "Enemy Chose Paper" << endl;
+                    cout << "Tie... Try Again" << endl;
+                    counter++;
+                }
+
+                if(enemy == 3) // Scissors
+                {
+                    cout << "Enemy Chose Scissors" << endl;
+                    cout << "You Lose, A Party Member Has Deceased" << endl;
+                    bool exit = false;
+                    while(exit == false) {
+                        int randNum = rand() % 5;
+                        if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+                            int x = 1 + 1;
+                        } else {
+                            party_.members[randNum].fullness = 0;//kills party member
+                            cout << party_.members[randNum].name << " was left behind."<< endl;
+                            party_.checkPartyLive();
+                            party_.members[randNum].checkAlive();
+                            exit = true;
+                        }
+
+                    }
+                    // KILL PARTY MEMBER
+                    break;
+                }
+            }
+
+            if (choice == 3) // Scissors is Chosen
+            {
+                if(enemy == 1) // Rock
+                {
+                    cout << "Enemy Chose Rock" << endl;
+                    cout << "You Lose, A Party Member Has Deceased" << endl;
+                    // KILL PARTY MEMBER
+                    break;
+                }
+
+                if(enemy == 2) // Paper
+                {
+                    cout << "Enemy Chose Paper" << endl;
+                    cout << "You Win! You May Enter The Room" << endl;
+                    keys = true;
+                    break;
+                }
+
+                if(enemy == 3) // Scissors
+                {
+                    cout << "Enemy Chose Scissors" << endl;
+                    cout << "Tie... Try Again" << endl;
+                    counter++;
+                }
+            }
+
+            if(counter == 3)
+            {
+                cout << "That Was 3 Attempts. You Lose, A Party Member Has Deceased" << endl;
+                //KILL PARTY MEMBER
+                bool exit = false;
+                while(exit == false) {
+                    int randNum = rand() % 5;
+                    if(party_.members[randNum].checkAlive() == false) {//checks that random party member is already alive
+                        int x = 1 + 1;
+                    } else {
+                        party_.members[randNum].fullness = 0;//kills party member
+                        cout << party_.members[randNum].name << " was left behind."<< endl;
+                        party_.checkPartyLive();
+                        party_.members[randNum].checkAlive();
+                        exit = true;
+                    }
+
+        }
+                break;
+            }
+        }
+
+
+
+    }
+
+
+    if (keys == true) // If Have Keys, Fight Monster +2 levels 
+    {
+    // DECLARE VARIBALES
+    cout << "A monster is approaching" << endl;
+    ifstream file_input;
+    string line;
+    string monster; 
+    string arr[2];   
+
+
+    // Find Numbers of Monsters Left in File
+    int counter = 0;
+    file_input.open("monsters.txt");
+    while(!file_input.eof())
+    {
+        getline(file_input, line);
+        counter++;
+    }
+    file_input.close();
+
+
+
+    // Select Random Monster From File and Send To "Monster"
+    while(true)
+    {
+    int random = rand() % counter + 1;   // GIVES RANDOM NUMBER (1 - total monsters left)
+    file_input.open("monsters.txt");
+    for(int i = 1; i <= counter; i++)  
+    {
+        getline(file_input, monster);
+        if (i == random) {
+            split(monster, ',', arr, 2); //only splits if random number matches line
+        }
+    }
+    file_input.close();
+
+    if(stoi(arr[1]) == party_.roomsClear + 2)  // Make sure level is equal to rooms cleared + 2
+    {
+        break;
+    }
+    }
+
+
+    // FIGHT THE MONSTER
+    int choice;
+    cout << "You are being attacked by " << arr[0] << " level: " << arr[1] << endl;
+
+
+        // Find Variables For Win / Lose Calculation
+        int r1 = rand() % 6 + 1;   // GIVES RANDOM NUMBER (1 - 6)
+        int r2 = rand() % 6 + 1;   // GIVES RANDOM NUMBER (1 - 6)
+        int d = 4; // Consant 
+        int c = stoi(arr[1]);  // Monster Level
+        int a = party.armor; // Number of Party Armor Sets
+
+
+        int w = 0;// MAKE CALCUATION FOR W BASED ON GITHUB INSTRUCTIONS
+        for(int i = 0; i < 5; i++) {
+            w += party_.weapons[i];//counts number for weapons
+            if(i == 2) {
+                w += party_.weapons[i] * 1;//math for adding bonus weapons
+            } else if (i == 3) {
+                w += party_.weapons[i] * 2;
+            } else if (i == 4) {
+                w += party_.weapons[i] * 3;
+            }
+        }
+
+        int fightWin = (r1 * w + d) - ((r2 * c) / a);
+        if(fightWin > 0) {
+            //won fight
+            //delete the monster
+            cout << "You win!" << endl;
+            cout << "You have defeated the " << arr[0] << endl;
+            cout << "You gain " << 10 * c << " gold pieces!" << endl;
+            party_.gold += c * 10;
+            cout << "You gain " << 5 * c << " lbs of food!" << endl;
+            party_.ingredients += c * 5;
+            int keyDrop = rand() % 10 + 1;
+            if(keyDrop == 1) {
+                cout << "The monster had dropped a key!" << endl;
+                party_.keys ++;
+            }
+            party_.roomsClear++;
+            map.removeRoom(map.getPlayerRow(), map.getPlayerCol());//removes npc
+            map.isFreeSpace(map.getPlayerRow(), map.getPlayerCol());
+
+            //delete monster from file
+        } else {
+            //lost fight
+            cout << "You have lost" << endl;
+            cout << "You have been defeated by the " << arr[0] << endl;
+            cout << "You lose " << party_.gold / 4 << " gold." << endl;
+            party_.gold -= party_.gold / 4;
+            int randFood = rand() % 31 + 1;
+            cout << "You lose " << randFood << " lbs of ingredients." << endl;
+            party_.ingredients -= randFood;
+            for(int i = 0; i < 5; i++) {
+                int randDie;
+                int tempArmor = party_.armor;//armor value to interact with
+                if(tempArmor > 0) {
+                    randDie = rand() % 21 + 1;//chance decreases if they have armor
+                    tempArmor--;
+                } else {
+                    randDie = rand() % 11 + 1;//if they don't have armor
+                }
+                if (randDie == 1) {
+                    cout << party_.members[i].name << " has been slain by the " << arr[0] << endl;
+                    party_.members[i].fullness = 0;
+                }
+            }
+        }
+    }
+
+    return;
 }

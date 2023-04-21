@@ -46,6 +46,8 @@ public:
     //void checkLose(Game &game);
     void merchantMenu();
 
+    int monstersDefeated;
+
 
 };
 

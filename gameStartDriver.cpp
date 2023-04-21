@@ -10,13 +10,61 @@
 #include "party.h"
 #include "Map.h"
 #include "BaseAction.h"
+#include "score.h"
 using namespace std;
 
-void sortScores(vector<int> &scores) {
-    int temp;
+int splitDriver(string input_string, char seperator, string arr[], int arr_size)
+{
+    // DECLARE VARIABLES 
+    string str = "";
+    int position = 0;
+    int num_splits = 0;
+
+    // LOOP THAT ADDS TO TEMPORARY STRING IF NO SEPERATOR DETECTED 
+    for (int i = 0; i < input_string.length(); i++)
+    {
+        if (input_string[i] != seperator)
+        {
+            str = str + input_string[i];
+        }
+
+        // RESET AND ADD TO INDEX WHEN SEPERATOR DETECTED
+        else
+        {
+            arr[position] = str;
+            str = "";
+            position++;
+            num_splits++;
+        }
+
+    }
+
+    arr[position] = str;
+
+    // TEST FOR DIFFERENT OUTCOMES TO DETERMINE RETURN VALUE 
+    if (arr_size < num_splits + 1)
+    {
+        num_splits = -1;
+        return num_splits;
+    }
+
+    else if (input_string.length() == 0)
+    {
+        return 0;
+    }
+
+    else
+    {
+        return num_splits + 1;
+    }
+
+}
+
+void sortScores(vector<Score> &scores) {
+    Score temp = Score();
     for(int i = 0; i < scores.size(); i++) {
         for(int j = 0; j < scores.size() - 1; j++) {
-            if(scores.at(j) < scores.at(j+1)) {
+            if(scores.at(j).turns < scores.at(j+1).turns) {
                 temp = scores.at(j+1);
                 scores.at(j+1) = scores.at(j);
                 scores.at(j) = temp;
@@ -26,34 +74,64 @@ void sortScores(vector<int> &scores) {
     return;
 }
 
-void printScores(vector<int> &scores) {
+void readScores(vector<Score> &scores) {
     fstream scoreFile("scores.txt");
     string line;
-    int i = 0;
+    string splitArr[10];
+    int skipCount = 0;
     while(getline(scoreFile,line)) {
-        if(i == 0) {
-            i++;
+    skipCount++;
+    //cout << "line: " << line << "skipcount: " << skipCount << endl;
+        if(skipCount % 2 == 0) {//CONNOR need to fix which line is read
+            cout << "if line: " << line << endl;
+            splitDriver(line, ' ', splitArr, 10);
+            // for(int i = 0; i < 10; i++) {
+            //     cout << splitArr[i] << endl;
+            // }
+            Score tempScore = Score();
+            tempScore.leaderName = splitArr[1];
+            tempScore.turns = stoi(splitArr[3]);
+            tempScore.gold = stoi(splitArr[5]);
+            tempScore.treasures = stoi(splitArr[7]);
+            tempScore.monstersDefeated = stoi(splitArr[9]);
+            scores.push_back(tempScore);
+            //cout << "Read Vect Size: " << scores.size() << endl;
         } else {
-            scores.push_back(line);
+            continue;
         }
     }
-    sortScores(scores);
+    scoreFile.close();
+}
 
-    
+void printScores(vector<Score> &scores) {
+    fstream scoreFile;
+    scoreFile.open("scores.txt", std::ofstream::out | std::ofstream::trunc);//deletes everything from the scores file
+    scoreFile << "Leaderboard(High to Low):" << endl;
+    for(int i = 0; i < scores.size(); i++) {
+        scoreFile << "Number " << i + 1 << " -- " << endl;
+        scoreFile << "Leader: " << scores.at(i).leaderName;
+        scoreFile << " Turns: " << scores.at(i).turns;
+        scoreFile << " Gold: " << scores.at(i).gold;
+        scoreFile << " Treasures: " << scores.at(i).treasures;
+        scoreFile << " MonstersDef: " << scores.at(i).monstersDefeated;
+        //scoreFile << " Explored Spaces: " << scores.at(i).exploredSpaces;
+        scoreFile << endl;
+    }
 
-    scoreFile.close()
+    scoreFile.close();
 }
 
 int main() {
     int score = 0;//score count
     string groupName;
-    vector <int>scores = {};
+    vector <Score>scores = {};
 
     // Create Class Objects 
     Game testGame = Game();
     Party testParty = Party(testGame);
     baseAction testAction = baseAction(testGame, testParty);
     testParty.merchantMenu();
+    Score gameScore = Score();
 
 
     //Create Seed For Random Numbers
@@ -223,6 +301,11 @@ int main() {
         else if(selection == 5) // GIVE UP
         {
             testAction.giveUp(testGame);
+        }
+
+        //cheat code to win
+        else if(selection == 69) {
+            testGame.setWin();
         }
 
         else
@@ -423,6 +506,93 @@ int main() {
         } // End of Room Space Actions
 
 
+        // EXIT SPACE ACTION
+        if(dungeonExit == true )
+        {
+            if(testParty.roomsClear == 5) // IF ALL ROOMS CLEARED
+            {
+                int numTreasures = 0;
+                for(int i = 0; i < 5; i++) {
+                    if(testParty.treasures[i] > 0) {
+                        numTreasures += testParty.treasures[i];//counts number of treasures
+                    }
+                }
+                cout << "Congratulation! You Have Cleared All Rooms And Found The Exit. YOU WIN!" << endl;
+
+                // SET WIN CONDITION 
+                testGame.setWin();
+
+                //Print Out Game Data
+                cout << "Number of rooms cleared: " << testParty.roomsClear << endl;
+                cout << "Gold pieces remaining: " << testParty.gold << endl;
+                cout << "Treasure remaining: " << numTreasures << endl;
+                cout << "Number of spaces explored: " << 0 << endl;//add spaces explored counter
+                cout << "Number of monsters defeated: " << testParty.monstersDefeated << endl;
+                cout << "Number of turns elapsed: " << score << endl;
+
+            }
+
+
+            else // IF ROOMS NOT CLEARED
+            {
+                cout << "Not All Rooms Have Been Cleared. Continue Exploring" << endl;
+
+                // Loop Until Valid Input Recieved 
+                while(direction == 'x')
+                {
+                    cout << "Where would you like to move?" << endl;
+                    cout << "w (up), a (left), s (down), or d (right)" << endl;
+                    cin >> direction;
+
+                    if(direction == 'w')
+                    {
+                        gameMap.move('w'); // Move Up
+                        if (explored != true)
+                        {
+                            // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        }
+                        break;
+                    }
+
+                    else if(direction == 'a')
+                    {
+                        gameMap.move('a'); // Move Left
+                        if (explored != true)
+                        {
+                            // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        }
+                        break;
+                    }
+
+                    else if(direction == 's')
+                    {
+                        gameMap.move('s'); // Move Down
+                        if (explored != true) // Increase Anger
+                        {
+                            // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        }
+                        break;
+                    }
+
+                    else if(direction == 'd')
+                    {
+                        gameMap.move('d'); // Move Right
+                        if (explored != true)
+                        {
+                            // INCREASE SORECERS ANGER ONLY IF ALIVE
+                        }
+                        break; 
+                    }
+
+                    else // Loop through again if invalid input
+                    {
+                        cout << "Invalid Input. Please Enter A Valid Character" << endl;
+                        direction = 'x';
+                    }
+                }
+            }
+        }
+
         // MISFORTUNES
         if(selection != 1)
         {
@@ -443,16 +613,61 @@ int main() {
                     if(rand_num2 == 1)  // LOSE 10kg Ingredients 
                     {
                         // LOSE 10kg INGREDIENTS
+                        cout << "You lose 10kg ingredients" << endl;
+                        if(testParty.ingredients - 10 < 0) {
+                            testParty.ingredients = 0;
+                        } else {
+                            testParty.ingredients -= 10;
+                        }
                     }
 
                     else if(rand_num2 == 2) // LOSE ARMOR
                     {
                         // LOSE ARMOR
+                        cout << "Bandits make off with your armor!" << endl;
+                        if(testParty.armor > 0) {
+                            testParty.armor--;
+                        }
                     }
 
                     else  // LOSE COOKWARE
                     {
                         // LOSE COOKWARE
+                        int numCookware = 0;
+                    for (int i = 0; i < 3; i++) {
+                        if(testParty.cookware[i] > 0) {
+                            numCookware += testParty.cookware[i];
+                        }
+                    }
+                    if(numCookware > 0) {
+                        bool exit = false;
+                        while(exit == false) {
+                            int randNum = rand() % 3;
+                            switch(randNum) {
+                                case 0: 
+                                    if(testParty.cookware[0] > 0) {
+                                        testParty.cookware[0]--;
+                                        cout << "Bandits made off with your Ceramic Pot!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                                case 1: 
+                                    if(testParty.cookware[1] > 0) {
+                                        testParty.cookware[1]--;
+                                        cout << "Bandits made off with your Frying Pan!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                                case 2: 
+                                    if(testParty.cookware[2] > 0) {
+                                        testParty.cookware[2]--;
+                                        cout << "Bandits made off with your Cauldron!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                            }
+                        }
+                    }
                     }
                 }
 
@@ -467,7 +682,6 @@ int main() {
                         if(testParty.members[randNum].checkAlive() == false) {//checks that random party member is already alive
                             int x = 1 + 1;
                         } else {
-                            cout << "Random num: " << randNum << endl;
                             testParty.members[randNum].fullness = 0;//kills party member
                             cout << testParty.members[randNum].name << " was left behind."<< endl;
                             testParty.checkPartyLive();
@@ -490,6 +704,55 @@ int main() {
                 else if(rand_num2 == 10)  // WEAPON BREAK
                 {
                     //WEAPON BREAK (ARE THEY STORED IN ARRAY?)
+                    int numWeapons = 0;
+                    for (int i = 0; i < 5; i++) {
+                        if(testParty.weapons[i] > 0) {
+                            numWeapons += testParty.weapons[i];
+                        }
+                    }
+                    if(numWeapons > 0) {
+                        bool exit = false;
+                        while(exit == false) {
+                            int randNum = rand() % 5;
+                            switch(randNum) {
+                                case 0: 
+                                    if(testParty.weapons[0] > 0) {
+                                        testParty.weapons[0]--;
+                                        cout << "Bandits made off with your Stone Club!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                                case 1: 
+                                    if(testParty.weapons[1] > 0) {
+                                        testParty.weapons[1]--;
+                                        cout << "Bandits made off with your Spear!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                                case 2: 
+                                    if(testParty.weapons[2] > 0) {
+                                        testParty.weapons[2]--;
+                                        cout << "Bandits made off with your Rapier!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                                case 3: 
+                                    if(testParty.weapons[3] > 0) {
+                                        testParty.weapons[3]--;
+                                        cout << "Bandits made off with your Battle-Axe!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                                case 4: 
+                                    if(testParty.weapons[4] > 0) {
+                                        testParty.weapons[4]--;
+                                        cout << "Bandits made off with your Long-sword!" << endl;
+                                        exit = true;
+                                    }
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -511,6 +774,28 @@ int main() {
         testGame.checkWin();
     }
 
-    scores.push_back(score);//saves score to score vector
+    //saves score and pushes to scoreboard
+    gameScore.leaderName = testParty.members[0].name;
+    gameScore.turns = score;
+    gameScore.gold = testParty.gold;
+
+    //count treasures
+    int numTreasures = 0;
+    for(int i = 0; i < 5; i++) {
+        if(testParty.treasures[i] > 0) {
+            numTreasures += testParty.treasures[i];//counts number of treasures
+        }
+    }
+    gameScore.treasures = numTreasures;
+    gameScore.monstersDefeated = testParty.monstersDefeated;
+
+    scores.push_back(gameScore);
+
+    readScores(scores);
+    sortScores(scores);
+
+    //cout << "Vect Size: " << scores.size() << endl;
+
+    printScores(scores);
 
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 #include "game.h"
 #include "party.h"
+#include "Map.h"
 using namespace std;
 
 
@@ -16,7 +17,7 @@ class baseAction
     void cook(Party &party);   // Display Cooking Menu and Loop 
 
     // NPC Space Actions 
-    void speak(Party &party);
+    void speak(Party &party, Map &map);
 
     // Room Space Actions
     void openDoor();
@@ -24,6 +25,6 @@ class baseAction
     // Anytime Actions
     void giveUp(Game &game);   // Display Game Ending Conditons
 
-    void doorOpen();
+    void doorOpen(Party &party, Map &map);
 
 };

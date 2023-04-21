@@ -42,6 +42,7 @@ Party::Party(Game &game_) {
     roomsClear = 0;
     anger = 0;
     game = game_;
+    monstersDefeated = 0;
 }
 
 bool Party::checkPartyLive() {
