@@ -537,7 +537,7 @@ void baseAction::doorOpen(Party &party_, Map &map)
 
     // TEST FOR HAVING A KEY
     bool keys = false;
-    if(party.keys > 0) {
+    if(party_.keys > 0) {
         keys = true;
     }
 

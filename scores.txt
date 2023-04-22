@@ -1,3 +1,11 @@
 Leaderboard(High to Low):
 Number 1 -- 
-Leader: perry Turns: 3 Gold: 40 Treasures: 0 MonstersDef: 0
+Leader: nate Turns: 1 Gold: 100 Treasures: 0 MonstersDef: 0
+Number 2 -- 
+Leader: nate Turns: 1 Gold: 100 Treasures: 0 MonstersDef: 0
+Number 3 -- 
+Leader: ron Turns: 2 Gold: 100 Treasures: 0 MonstersDef: 0
+Number 4 -- 
+Leader: polb Turns: 4 Gold: 100 Treasures: 0 MonstersDef: 0
+Number 5 -- 
+Leader: slob Turns: 5 Gold: 100 Treasures: 0 MonstersDef: 0

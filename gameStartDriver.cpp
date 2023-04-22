@@ -64,7 +64,7 @@ void sortScores(vector<Score> &scores) {
     Score temp = Score();
     for(int i = 0; i < scores.size(); i++) {
         for(int j = 0; j < scores.size() - 1; j++) {
-            if(scores.at(j).turns < scores.at(j+1).turns) {
+            if(scores.at(j).turns > scores.at(j+1).turns) {
                 temp = scores.at(j+1);
                 scores.at(j+1) = scores.at(j);
                 scores.at(j) = temp;
@@ -80,9 +80,10 @@ void readScores(vector<Score> &scores) {
     string splitArr[10];
     int skipCount = 0;
     while(getline(scoreFile,line)) {
-    skipCount++;
-    //cout << "line: " << line << "skipcount: " << skipCount << endl;
-        if(skipCount % 2 == 0) {//CONNOR need to fix which line is read
+    cout << "line: " << line << "skipcount: " << skipCount << endl;
+        if(skipCount == 0) {
+            int x = 5+5;
+        } else if(skipCount % 2 == 0) {//CONNOR need to fix which line is read
             cout << "if line: " << line << endl;
             splitDriver(line, ' ', splitArr, 10);
             // for(int i = 0; i < 10; i++) {
@@ -96,9 +97,8 @@ void readScores(vector<Score> &scores) {
             tempScore.monstersDefeated = stoi(splitArr[9]);
             scores.push_back(tempScore);
             //cout << "Read Vect Size: " << scores.size() << endl;
-        } else {
-            continue;
         }
+        skipCount++;
     }
     scoreFile.close();
 }
@@ -304,7 +304,7 @@ int main() {
         }
 
         //cheat code to win
-        else if(selection == 69) {
+        else if(selection == 23) {
             testGame.setWin();
         }
 
@@ -774,28 +774,30 @@ int main() {
         testGame.checkWin();
     }
 
-    //saves score and pushes to scoreboard
-    gameScore.leaderName = testParty.members[0].name;
-    gameScore.turns = score;
-    gameScore.gold = testParty.gold;
+    if(testGame.win == true) {
+        //saves score and pushes to scoreboard
+        gameScore.leaderName = testParty.members[0].name;
+        gameScore.turns = score;
+        gameScore.gold = testParty.gold;
 
-    //count treasures
-    int numTreasures = 0;
-    for(int i = 0; i < 5; i++) {
-        if(testParty.treasures[i] > 0) {
-            numTreasures += testParty.treasures[i];//counts number of treasures
+        //count treasures
+        int numTreasures = 0;
+        for(int i = 0; i < 5; i++) {
+            if(testParty.treasures[i] > 0) {
+                numTreasures += testParty.treasures[i];//counts number of treasures
+            }
         }
+        gameScore.treasures = numTreasures;
+        gameScore.monstersDefeated = testParty.monstersDefeated;
+
+        scores.push_back(gameScore);
+
+        readScores(scores);
+        sortScores(scores);
+
+        //cout << "Vect Size: " << scores.size() << endl;
+
+        printScores(scores);
     }
-    gameScore.treasures = numTreasures;
-    gameScore.monstersDefeated = testParty.monstersDefeated;
-
-    scores.push_back(gameScore);
-
-    readScores(scores);
-    sortScores(scores);
-
-    //cout << "Vect Size: " << scores.size() << endl;
-
-    printScores(scores);
 
 }
