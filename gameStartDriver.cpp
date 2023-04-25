@@ -80,11 +80,11 @@ void readScores(vector<Score> &scores) {
     string splitArr[10];
     int skipCount = 0;
     while(getline(scoreFile,line)) {
-    cout << "line: " << line << "skipcount: " << skipCount << endl;
+    //cout << "line: " << line << "skipcount: " << skipCount << endl;
         if(skipCount == 0) {
             int x = 5+5;
         } else if(skipCount % 2 == 0) {//CONNOR need to fix which line is read
-            cout << "if line: " << line << endl;
+            //cout << "if line: " << line << endl;
             splitDriver(line, ' ', splitArr, 10);
             // for(int i = 0; i < 10; i++) {
             //     cout << splitArr[i] << endl;
